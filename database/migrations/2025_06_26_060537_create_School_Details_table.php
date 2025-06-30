@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roll_numbers', function (Blueprint $table) {
-            $table->id();
-            $table->string('roll_number')->unique();
+        Schema::create('Schools_Details', function (Blueprint $table) {
+            $table->id()->unique();
+            $table->string('email')->unique();
             $table->timestamps();
+            $table->string('School_name');
+            $table->string('School_contact');
+            $table->string('Fee_structure');
         });
     }
 
@@ -23,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roll_numbers');
+        Schema::dropIfExists('Schools_Details');
     }
 };

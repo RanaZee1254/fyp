@@ -8,15 +8,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
-
 type RegisterForm = {
     name: string;
     email: string;
     password: string;
     password_confirmation: string;
     Contact_Number?: string; 
+    role: string; 
 };
-
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm<Required<RegisterForm>>({
         name: '',
@@ -24,15 +23,14 @@ export default function Register() {
         password: '',
         password_confirmation: '',
         Contact_Number: '',
+        role: '', 
     });
-
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         post(route('register'), {
             onFinish: () => reset('password', 'password_confirmation'),
         });
     };
-
     return (
         <AuthLayout title="Create an account" description="Enter your details below to create your account">
             <Head title="Register" />
@@ -54,7 +52,6 @@ export default function Register() {
                         />
                         <InputError message={errors.name} className="mt-2" />
                     </div>
-
                     <div className="grid gap-2">
                         <Label htmlFor="email">Email address</Label>
                         <Input
@@ -70,7 +67,6 @@ export default function Register() {
                         />
                         <InputError message={errors.email} />
                     </div>
-
                     <div className="grid gap-2">
                         <Label htmlFor="password">Password</Label>
                         <Input
@@ -86,7 +82,6 @@ export default function Register() {
                         />
                         <InputError message={errors.password} />
                     </div>
-
                     <div className="grid gap-2">
                         <Label htmlFor="password_confirmation">Confirm password</Label>
                         <Input
@@ -115,11 +110,31 @@ export default function Register() {
                             placeholder="Contact Number"
                         />
                         <InputError message={errors.Contact_Number} />
+                        <div className="grid gap-2">
+    <Label htmlFor="account_type">Account Type</Label>
+    <select
+        id="account_type"
+        value={data.role}
+        onChange={(e) => setData('role', e.target.value)}
+        disabled={processing}
+        className="border px-3 py-2 rounded-md"
+        required
+    >
+        <option value="">Select account type</option>
+        <option value="school">School</option>
+        <option value="guardians">Guardians</option>
+        <option value="shopkeeper">Shopkeeper</option>
+    </select>
+    <InputError message={errors.role} />
+</div>
                     </div>
-                    <Button type="submit" className="mt-2 w-full bg-blue-500" tabIndex={5} disabled={processing}>
+                    <Button type="submit"  className="inline-block rounded-sm border bg-blue-500 border-[#19140035] px-5 py-1.5 text-sm leading-normal text-white hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                                 tabIndex={5} disabled={processing} 
+                                 onClick={() => route('school.register')}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         Create account
                     </Button>
+                    onClick=route('school.register')
                       </div>
                 <div className="text-center text-sm text-muted-foreground">
                     Already have an account?{' '}

@@ -28,24 +28,41 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
+
     public function store(Request $request): RedirectResponse
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
+        'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        'role' => 'required|string|in:parent,shopkeeper,school', 
+    ]);
+
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'role' => $request->role,
+    ]);
+
+    event(new Registered($user));
+
+    Auth::login($user);
+
+    // Role-based redirect
+    switch ($user->role) {
+        case 'school':
+            return redirect()->route('school.register');
+        case 'shopkeeper':
+            return redirect()->route('shopkeeper.dashboard');
+        case 'parent':
+            return redirect()->route('parents.dashboard');
+        default:
+            return redirect()->route('dashboard');
+    }
+}
+ public function showRegistrationForm(): Response
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        event(new Registered($user));
-
-        Auth::login($user);
-
-        return redirect()->intended(route('dashboard', absolute: false));
+        return Inertia::render('auth/register');
     }
 }

@@ -48,6 +48,14 @@ export default function Dashboard() {
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Dashboard" />
+        ---if school
+        {/* <School /> */}
+
+        ---else if parents
+        {/* <Parents /> */}
+
+        ---else i shopkeeper
+        {/* <Shopkeeper /> */}
       <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
         <div className="grid auto-rows-min gap-4 md:grid-cols-2">
           {schools.map(({ name, image, route, campuses }) => (
@@ -68,7 +76,7 @@ export default function Dashboard() {
                         ))}
                 </ol>
                 <button
-                  onClick={() => router.visit(route)}
+                  onClick={() => router.visit('school.register')}
                   className="mt-2 rounded-md bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700">
                   View Details
                 </button>
