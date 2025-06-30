@@ -106,7 +106,7 @@ export default function Register() {
                         <Label htmlFor="Contact_Number">Contact Number</Label>
                         <Input
                             id="Contact_Number"
-                            type="tel"
+                            type="number"
                             tabIndex={5}
                             autoComplete="tel"
                             value={data.Contact_Number}
