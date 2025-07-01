@@ -1,7 +1,6 @@
 import { useState, FormEventHandler } from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
-
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
@@ -9,46 +8,29 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
-
 type LoginForm = {
     email: string;
     password: string;
     remember: boolean;
 };
-
 interface LoginProps {
     status?: string;
     canResetPassword: boolean;
 }
-
-// 👇 Supported login types
 type LoginRole = 'default' | 'shopkeeper' | 'parents' | 'school';
-
 export default function Login({ status, canResetPassword }: LoginProps) {
     const [role, setRole] = useState<LoginRole>('default');
-
     const { data, setData, post, processing, errors, reset } = useForm<Required<LoginForm>>({
         email: '',
         password: '',
         remember: false,
     });
-
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-
-        // 👇 Dynamic route based on selected role
-        const loginRoutes: Record<LoginRole, string> = {
-            default: route('login'),
-            shopkeeper: route('shopkeeper.register'),
-            parents: route('parents.register'),
-            school: route('school.register'),
-        };
-
-        post(loginRoutes[role], {
+        post(route('login'), {
             onFinish: () => reset('password'),
         });
     };
-
     return (
         <AuthLayout title="Log in to your account" description="Enter your email and password below to log in">
             <Head title="Log in" />
@@ -64,14 +46,12 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             onChange={(e) => setRole(e.target.value as LoginRole)}
                             className="border px-3 py-2 rounded-md"
                         >
-                            <option value="default">Visitor</option>
+                            <option value="default">Select Role</option>
                             <option value="shopkeeper">Shopkeeper</option>
                             <option value="parents">Parents</option>
                             <option value="school">School</option>
                         </select>
                     </div>
-
-                    {/* Email Input */}
                     <div className="grid gap-2">
                         <Label htmlFor="email">Email address</Label>
                         <Input
@@ -87,8 +67,6 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                         />
                         <InputError message={errors.email} />
                     </div>
-
-                    {/* Password Input */}
                     <div className="grid gap-2">
                         <div className="flex items-center">
                             <Label htmlFor="password">Password</Label>
@@ -110,8 +88,6 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                         />
                         <InputError message={errors.password} />
                     </div>
-
-                    {/* Remember Me */}
                     <div className="flex items-center space-x-3">
                         <Checkbox
                             id="remember"
@@ -122,15 +98,11 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                         />
                         <Label htmlFor="remember">Remember me</Label>
                     </div>
-
-                    {/* Submit Button */}
                     <Button type="submit"  className="inline-block rounded-sm border bg-blue-500 border-[#19140035] px-5 py-1.5 text-sm leading-normal text-white hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]" tabIndex={4} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         Log in
                     </Button>
                 </div>
-
-                {/* Sign Up Link */}
                 <div className="text-center text-sm text-muted-foreground">
                     Don't have an account?{' '}
                     <TextLink href={route('register')} tabIndex={5}>
