@@ -44,26 +44,26 @@ export default function Register() {
     address: '',
   });
   const submit: FormEventHandler = (e) => {
-    e.preventDefault();
-    let registerRoute: string;
-    switch (data.role) {
-      case 'school':
-        registerRoute = route('school.register');
-        break;
-      case 'guardians':
-        registerRoute = route('guardians.register');
-        break;
-      case 'shopkeeper':
-        registerRoute = route('shopkeeper.register');
-        break;
-      default:
-        registerRoute = route('register');
-        break;
-    }
-    post(registerRoute, {
-      onFinish: () => reset('password', 'password_confirmation'),
-    });
-  };
+  e.preventDefault();
+  let registerRoute: string;
+  switch (data.role) {
+    case 'school':
+      registerRoute = route('school.register');
+      break;
+    case 'guardians':
+      registerRoute = route('guardians.register');
+      break;
+    case 'shopkeeper':
+      registerRoute = route('shopkeeper.register');
+      break;
+    default:
+      registerRoute = route('register');
+      break;
+  }
+  post(registerRoute, {
+    onFinish: () => reset('password', 'password_confirmation'),
+  });
+};
   const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const role = e.target.value;
     setData('role', role);
@@ -106,7 +106,6 @@ export default function Register() {
             />
             <InputError message={errors.name} className="mt-2" />
           </div>
-
           {/* Email */}
           <div className="grid gap-2">
             <Label htmlFor="email">Email address</Label>
@@ -123,7 +122,6 @@ export default function Register() {
             />
             <InputError message={errors.email} />
           </div>
-
           {/* Password */}
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
@@ -140,7 +138,6 @@ export default function Register() {
             />
             <InputError message={errors.password} />
           </div>
-
           {/* Confirm Password */}
           <div className="grid gap-2">
             <Label htmlFor="password_confirmation">Confirm password</Label>
@@ -157,7 +154,6 @@ export default function Register() {
             />
             <InputError message={errors.password_confirmation} />
           </div>
-
           {/* Contact Number */}
           <div className="grid gap-2">
             <Label htmlFor="Contact_Number">Contact Number</Label>
@@ -173,7 +169,6 @@ export default function Register() {
             />
             <InputError message={errors.Contact_Number} />
           </div>
-
           {/* Role */}
           <div className="grid gap-2">
             <Label htmlFor="account_type">Account Type</Label>
@@ -192,7 +187,6 @@ export default function Register() {
             </select>
             <InputError message={errors.role} />
           </div>
-
           {/* Guardian-specific Fields */}
           {data.role === 'guardians' && (
             <>
@@ -234,7 +228,6 @@ export default function Register() {
               </div>
             </>
           )}
-
           {/* School-specific Fields */}
           {data.role === 'school' && (
             <>
