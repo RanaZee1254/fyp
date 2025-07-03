@@ -13,6 +13,7 @@ type RegisterForm = {
   password: string;
   password_confirmation: string;
   Contact_Number: string;
+  Address:string;
   role: string;
   // Guardian-specific
   student_name?: string;
@@ -21,7 +22,6 @@ type RegisterForm = {
   // School-specific
   school_reg_no?: string;
   affiliation?: string;
-  address?: string;
   level?: string;
   // Shopkeeper-specific
   shop_type?: string;
@@ -41,20 +41,20 @@ export default function Register() {
     affiliation: '',
     shop_type: '',
     level: '',
-    address: '',
+    Address: '',
   });
   const submit: FormEventHandler = (e) => {
   e.preventDefault();
   let registerRoute: string;
   switch (data.role) {
     case 'school':
-      registerRoute = route('school.register');
+      registerRoute = route('dashboard');
       break;
     case 'guardians':
-      registerRoute = route('guardians.register');
+      registerRoute = route('dashboard');
       break;
     case 'shopkeeper':
-      registerRoute = route('shopkeeper.register');
+      registerRoute = route('dashboard');
       break;
     default:
       registerRoute = route('register');
@@ -67,17 +67,17 @@ export default function Register() {
   const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const role = e.target.value;
     setData('role', role);
-    if (role !== 'guardians') {
+    if (role === 'guardians') {
       setData('student_name', '');
       setData('student_age', '');
       setData('student_class', '');
     }
-    if (role !== 'school') {
+    if (role === 'school') {
       setData('school_reg_no', '');
       setData('affiliation', '');
       setData('level', '');
     }
-    if (role !== 'shopkeeper') {
+    if (role === 'shopkeeper') {
       setData('shop_type', '');
     }
   };
@@ -168,6 +168,21 @@ export default function Register() {
               placeholder="Contact Number"
             />
             <InputError message={errors.Contact_Number} />
+          </div>
+          {/* Address */}
+          <div className="grid gap-2">
+            <Label htmlFor="Address">Address</Label>
+            <Input
+              id="Address"
+              type="text"
+              tabIndex={6}
+              autoComplete="text"
+              value={data.Address}
+              onChange={(e) => setData('Address', e.target.value)}
+              disabled={processing}
+              placeholder="Address"
+            />
+            <InputError message={errors.Address} />
           </div>
           {/* Role */}
           <div className="grid gap-2">
@@ -267,51 +282,29 @@ export default function Register() {
                 />
                 <InputError message={errors.level} />
               </div>
-              <div className="grid gap-2">
-                <Label htmlFor="address">Address</Label>
-                <Input
-                  id="address"
-                  type="text"
-                  value={data.address}
-                  onChange={(e) => setData('address', e.target.value)}
-                  disabled={processing}
-                  placeholder="Street address"
-                />
-                <InputError message={errors.address} />
-              </div>
             </>
           )}
           {data.role === 'shopkeeper' && (
-            <div className="grid gap-2">
-              <Label htmlFor="shop_type">Shop Type</Label>
-              <select
-                id="shop_type"
-                value={data.shop_type}
-                onChange={(e) => setData('shop_type', e.target.value)}
-                disabled={processing}
-                className="border px-3 py-2 rounded-md"
-                required
-              >
-                <option value="">Select shop type</option>
-                <option value="bookshop">Bookshop</option>
-                <option value="shoe_shop">Shoe Shop</option>
-                <option value="uniform_shop">Uniform Shop</option>
-              </select>
-              <InputError message={errors.shop_type} />
-                <Label htmlFor="address">Location</Label>
-                <Input
-                  id="address"
-                  type="text"
-                  value={data.address}
-                  onChange={(e) => setData('address', e.target.value)}
+              <div className="grid gap-2">
+                 <Label htmlFor="shop_type">Shop Type</Label>
+                <select
+                 id="shop_type"
+                  value={data.shop_type}
+                  onChange={(e) => setData('shop_type', e.target.value)}
                   disabled={processing}
-                  placeholder="Location"
-                />
-                <InputError message={errors.address} />
+                  className="border px-3 py-2 rounded-md"
+                   required
+                >
+                  <option value="">Select shop type</option>
+                  <option value="bookshop">Bookshop</option>
+                  <option value="shoe_shop">Shoe Shop</option>
+                  <option value="uniform_shop">Uniform Shop</option>
+                </select>
+                <InputError message={errors.shop_type} />
               </div>
-          )}
-        </div>
-        <Button
+                  )}
+          </div>
+                    <Button
                         type="submit"
                         className="inline-block rounded-sm border bg-blue-500 border-[#19140035] px-5 py-1.5 text-sm leading-normal text-white hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
                         tabIndex={6}

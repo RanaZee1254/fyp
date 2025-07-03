@@ -2,61 +2,59 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\School;
 use App\Models\ShopProfile;
 use App\Models\ParentProfile;
-use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 class UserProfileSeeder extends Seeder
 {
     public function run(): void
     {
-        // School User
+        // Create a school user and profile
         $schoolUser = User::create([
             'name' => 'Sunrise High School',
             'email' => 'school@example.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make(''),
             'role' => 'school',
             'Contact_Number' => '1112223333',
         ]);
 
         School::create([
             'user_id' => $schoolUser->id,
-            'reg_no' => 'SCH12345',
-            'affiliation' => 'Board A',
+            'reg_no' => 'SCH-2025-001',
+            'affiliation' => 'Cambridge',
             'level' => 'Secondary',
-            'address' => '123 School Street',
+            'address' => '123 Main St',
         ]);
 
-        // Shopkeeper User
-        $shopkeeperUser = User::create([
+        // Create a shopkeeper user and profile
+        $shopUser = User::create([
             'name' => 'City Bookstore',
             'email' => 'shopkeeper@example.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make(''),
             'role' => 'shopkeeper',
-            'Contact_Number' => '2223334444',
+            'Contact_Number' => '44556677',
         ]);
 
         ShopProfile::create([
-            'user_id' => $shopkeeperUser->id,
+            'user_id' => $shopUser->id,
             'shop_type' => 'bookshop',
             'address' => '45 Market Lane',
         ]);
-
-        // Parent User
+        // Create a parent user and profile
         $parentUser = User::create([
-            'name' => 'Jane Doe',
+            'name' => 'abc',
             'email' => 'parent@example.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make(''),
             'role' => 'parent',
-            'Contact_Number' => '3334445555',
+            'Contact_Number' => '11223344',
         ]);
-
         ParentProfile::create([
             'user_id' => $parentUser->id,
-            'student_name' => 'John Doe',
+            'student_name' => 'Mr x',
             'student_class' => 'Grade 4',
             'student_age' => 9,
         ]);
