@@ -1,31 +1,27 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
-return new class extends Migration
-{
-    /**
-     * Run the migrations.
-     */
+return new class extends Migration {
     public function up(): void
     {
-        Schema::create('Schools_Details', function (Blueprint $table) {
+        Schema::create('schools', function (Blueprint $table) {
             $table->id()->unique();
-            $table->string('email')->unique();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('email')->default('school@example.com');
+            $table->string('School_name')->nullable();
+            $table->string('School_contact')->default('12345678');
+            $table->string('Fee_structure')->default('12345');
+            $table->string('reg_no')->default('sch-1234-123');
+            $table->string('affiliation')->nullable();
+            $table->string('level')->nullable();
+            $table->string('address')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
-            $table->string('School_name');
-            $table->string('School_contact');
-            $table->string('Fee_structure');
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('Schools_Details');
+        Schema::dropIfExists('schools');
     }
 };

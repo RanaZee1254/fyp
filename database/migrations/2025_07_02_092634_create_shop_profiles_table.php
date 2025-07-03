@@ -10,6 +10,7 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('shop_type');
             $table->string('address')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

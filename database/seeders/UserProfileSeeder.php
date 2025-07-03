@@ -28,6 +28,7 @@ class UserProfileSeeder extends Seeder
             'affiliation' => 'Cambridge',
             'level' => 'Secondary',
             'address' => '123 Main St',
+            'image'=>'sample.jpg',
         ]);
 
         // Create a shopkeeper user and profile
@@ -43,6 +44,7 @@ class UserProfileSeeder extends Seeder
             'user_id' => $shopUser->id,
             'shop_type' => 'bookshop',
             'address' => '45 Market Lane',
+            'image'=>'sample.jpg',
         ]);
         // Create a parent user and profile
         $parentUser = User::create([
