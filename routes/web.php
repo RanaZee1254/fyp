@@ -6,15 +6,15 @@ use Illuminate\Support\Facades\Request;
 Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('home');
-Route::middleware('auth')->get('/dashboard', function (Request $request) {
-$user = Auth::user();
+Route::middleware('auth')->match(['get', 'post'], '/dashboard', function (Request $request) {
+    $user = Auth::user();
     if (!$user) {
         return redirect()->route('login');
     }
     else if ($user instanceof \Illuminate\Database\Eloquent\Model) {
-        $user->load(['schoolProfile', 'shopProfile', 'parentProfile']);
+        $user->load(['schoolProfile', 'shopProfile']);
     }
-    return Inertia::render('Dashboard', [
+    return view('Dashboard', [
         'user' => $user,
     ]);
 })->name('dashboard');

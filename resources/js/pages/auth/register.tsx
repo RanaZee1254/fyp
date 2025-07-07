@@ -14,6 +14,7 @@ type RegisterForm = {
   password_confirmation: string;
   Contact_Number: string;
   Address:string;
+  Image:string | File;
   role: string;
   // Guardian-specific
   student_name?: string;
@@ -42,24 +43,22 @@ export default function Register() {
     shop_type: '',
     level: '',
     Address: '',
+    Image:'',
   });
   const submit: FormEventHandler = (e) => {
   e.preventDefault();
   let registerRoute: string;
   switch (data.role) {
-    case 'school':
-      registerRoute = route('dashboard');
-      break;
-    case 'guardians':
-      registerRoute = route('dashboard');
-      break;
-    case 'shopkeeper':
-      registerRoute = route('dashboard');
-      break;
-    default:
-      registerRoute = route('register');
-      break;
-  }
+  case 'school':
+  case 'guardians':
+  case 'shopkeeper':
+    registerRoute = route('register');
+
+    break;
+  default:
+    registerRoute = route('register');
+    break;
+}
   post(registerRoute, {
     onFinish: () => reset('password', 'password_confirmation'),
   });
@@ -183,6 +182,24 @@ export default function Register() {
               placeholder="Address"
             />
             <InputError message={errors.Address} />
+          </div>
+           {/* Image*/}
+          <div className="grid gap-2">
+            <Label htmlFor="Image">Image</Label>
+            <Input
+              id="image"
+              type="file"
+              tabIndex={6}
+              autoComplete=" "
+              onChange={(e) => {
+            if (e.target.files && e.target.files[0]) {
+             setData('Image', e.target.files[0]);
+               }
+             }}
+              disabled={processing}
+              placeholder="Image"
+            />
+            <InputError message={errors.Image} />
           </div>
           {/* Role */}
           <div className="grid gap-2">

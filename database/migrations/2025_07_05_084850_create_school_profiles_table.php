@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('schools', function (Blueprint $table) {
+        Schema::create('school_profiles', function (Blueprint $table) {
             $table->id()->unique();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('email')->default('school@example.com');
@@ -15,13 +15,13 @@ return new class extends Migration {
             $table->string('reg_no')->default('sch-1234-123');
             $table->string('affiliation')->nullable();
             $table->string('level')->nullable();
-            $table->string('address')->nullable();
+            $table->string('address')->type('string');
             $table->string('image')->nullable();
             $table->timestamps();
         });
     }
     public function down(): void
     {
-        Schema::dropIfExists('schools');
+        Schema::dropIfExists('school_profiles');
     }
 };

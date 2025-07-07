@@ -29,18 +29,19 @@ class User extends Authenticatable
     ];
 
     // Relationships
-    public function schoolProfile()
-    {
-        return $this->hasOne(School::class);
-    }
+  public function schoolProfile()
+{
+    return $this->hasOne(SchoolProfile::class);
+}
 
-    public function shopProfile()
-    {
-        return $this->hasOne(ShopProfile::class);
-    }
+public function parentProfile()
+{
+    return $this->hasOne(ParentProfile::class);
+}
 
-    public function parentProfile()
-    {
-        return $this->hasOne(ParentProfile::class);
-    }
+public function shopProfile()
+{
+    return $this->hasOne(ShopProfile::class);
+}
+
 }

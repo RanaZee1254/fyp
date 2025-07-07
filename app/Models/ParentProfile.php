@@ -1,10 +1,7 @@
 <?php
-
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 class ParentProfile extends Model
 {
     use HasFactory;
@@ -14,6 +11,7 @@ class ParentProfile extends Model
         'student_name',
         'student_class',
         'student_age',
+        'image',
     ];
 
     public function user()

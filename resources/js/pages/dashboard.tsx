@@ -1,63 +1,53 @@
-import React from 'react';
-interface SchoolProfile {
+import AppLayout from '@/layouts/app-layout';
+import { Head } from '@inertiajs/react';
+import type { BreadcrumbItem } from '@/types';
+type SchoolProfile = {
   reg_no: string;
   affiliation?: string;
   level?: string;
   address?: string;
-}
-interface ShopProfile {
+};
+type ShopProfile = {
   shop_type: string;
   address?: string;
-}
-interface ParentProfile {
-  student_name: string;
-  student_class: string;
-  student_age: string;
-}
-interface User {
-  name: string;
-  role: 'school' | 'shopkeeper' | 'parent';
-  schoolProfile?: SchoolProfile;
-  shopProfile?: ShopProfile;
-  parentProfile?: ParentProfile;
-}
-interface DashboardProps {
-  user: User;
-}
-export default function Dashboard({ user }: DashboardProps) {
-  const { name, role, schoolProfile, shopProfile, parentProfile } = user;
-  console.log("Dashboard user prop:", user); // Debug log
+};
+type DashboardProps = {
+  schools: SchoolProfile[];
+  shops: ShopProfile[];
+};
+const breadcrumbs: BreadcrumbItem[] = [
+  {
+    title: 'Dashboard',
+    href: '/dashboard',
+  },
+];
+export default function Dashboard({ schools, shops }: DashboardProps) {
   return (
-    <div className="p-6 max-w-2xl mx-auto bg-white shadow-md rounded-md">
-      <h1 className="text-2xl font-bold mb-4">Welcome, {name}</h1>
-      <p className="mb-4">Role: {role}</p>
-      {role === 'school' && schoolProfile && (
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold mb-2">School Profile</h2>
-          <p>Registration No: {schoolProfile.reg_no}</p>
-          <p>Affiliation: {schoolProfile.affiliation || 'N/A'}</p>
-          <p>Level: {schoolProfile.level || 'N/A'}</p>
-          <p>Address: {schoolProfile.address || 'N/A'}</p>
+    <AppLayout breadcrumbs={breadcrumbs}>
+      <Head title="Dashboard" />
+      <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
+        <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+          {/* Render School Cards */}
+          {schools.map((school, index) => (
+            <div key={`school-${index}`} className="rounded border p-4 shadow">
+              <h3 className="font-bold">School</h3>
+              <p><strong>Reg No:</strong> {school.reg_no}</p>
+              {school.affiliation && <p><strong>Affiliation:</strong> {school.affiliation}</p>}
+              {school.level && <p><strong>Level:</strong> {school.level}</p>}
+              {school.address && <p><strong>Address:</strong> {school.address}</p>}
+            </div>
+          ))}
+
+          {/* Render Shop Cards */}
+          {shops.map((shop, index) => (
+            <div key={`shop-${index}`} className="rounded border p-4 shadow">
+              <h3 className="font-bold">Shop</h3>
+              <p><strong>Type:</strong> {shop.shop_type}</p>
+              {shop.address && <p><strong>Address:</strong> {shop.address}</p>}
+            </div>
+          ))}
         </div>
-      )}
-      {role === 'shopkeeper' && shopProfile && (
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold mb-2">Shop Profile</h2>
-          <p>Shop Type: {shopProfile.shop_type}</p>
-          <p>Address: {shopProfile.address || 'N/A'}</p>
-        </div>
-      )}
-      {role === 'parent' && parentProfile && (
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold mb-2">Parent Profile</h2>
-          <p>Student Name: {parentProfile.student_name}</p>
-          <p>Student Class: {parentProfile.student_class}</p>
-          <p>Student Age: {parentProfile.student_age}</p>
-        </div>
-      )}
-      {!['school', 'shopkeeper', 'parent'].includes(role) && (
-        <p>Your role does not have a dashboard yet.</p>
-      )}
-    </div>
+      </div>
+    </AppLayout>
   );
 }

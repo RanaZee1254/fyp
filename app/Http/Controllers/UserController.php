@@ -1,0 +1,25 @@
+<?php
+namespace App\Http\Controllers;
+use App\Models\User;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
+class UserController extends Controller
+{
+    public function index()
+    {
+        $users = User::all();
+        return Inertia::render('Users/Index', [
+            'users' => $users,
+        ]);
+    }
+    public function dashboard()
+    {
+        $schools = User::where('role', 'school')->with('schoolProfile')->get()->pluck('schoolProfile')->filter();
+        $shops = User::where('role', 'shopkeeper')->with('shopProfile')->get()->pluck('shopProfile')->filter();
+        dd($schools);
+        return Inertia::render('dashboard', [
+            'user' => Auth::user(),
+            'schools' => $schools->values(),
+            'shops' => $shops->values(),
+        ]);
+    }}

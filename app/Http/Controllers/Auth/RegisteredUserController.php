@@ -1,10 +1,10 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
-
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
+use App\Models\SchoolProfile;
+use App\Models\ParentProfile;
+use App\Models\ShopProfile;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
-
 class RegisteredUserController extends Controller
 {
     /**
@@ -28,26 +27,63 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => 'required|string|in:parent,shopkeeper,school', 
-        ]);
+   public function store(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        'Contact_Number' => 'required|string|max:20',
+        'Address' => 'required|string|max:255',
+        'role' => 'required|in:school,guardians,shopkeeper',
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
-        ]);
+        // Conditional validation
+        'school_reg_no' => 'required_if:role,school',
+        'affiliation' => 'required_if:role,school',
+        'level' => 'required_if:role,school',
 
-        event(new Registered($user));
-        Auth::login($user);
+        'student_name' => 'required_if:role,guardians',
+        'student_age' => 'required_if:role,guardians',
+        'student_class' => 'required_if:role,guardians',
 
-        // Role-based redirect (customize as needed)
-        return redirect()->route('role.' . $user->role . '.dashboard'); 
-        }
+        'shop_type' => 'required_if:role,shopkeeper',
+    ]);
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'Contact_Number' => $request->Contact_Number,
+        'Address' => $request->Address,
+        'role' => $request->role,
+    ]);
+    // Create related profile
+    switch ($request->role) {
+        case 'school':
+            SchoolProfile::create([
+                'user_id' => $user->id,
+                'school_reg_no' => $request->school_reg_no,
+                'affiliation' => $request->affiliation,
+                'level' => $request->level,
+            ]);
+            break;
+        case 'guardians':
+            ParentProfile::create([
+                'user_id' => $user->id,
+                'student_name' => $request->student_name,
+                'student_age' => $request->student_age,
+                'student_class' => $request->student_class,
+            ]);
+            break;
+        case 'shopkeeper':
+            ShopProfile::create([
+                'user_id' => $user->id,
+                'shop_type' => $request->shop_type,
+            ]);
+            break;
+    }
+    // Log the user in
+    Auth::login($user);
+    return redirect()->route('dashboard');
+
+}
 }
