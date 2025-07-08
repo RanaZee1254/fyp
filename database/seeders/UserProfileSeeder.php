@@ -11,13 +11,15 @@ class UserProfileSeeder extends Seeder
     public function run(): void
     {
         // Create a school user and profile
-        $schoolUser = User::create([
-            'name' => 'Sunrise High School',
-            'email' => 'school@example.com',
-            'password' => bcrypt('password'),
-            'role' => 'school',
-            'Contact_Number' => '1112223333',
-        ]);
+        $schoolUser = User::firstOrCreate(
+['email' => 'school@example.com'], 
+    [ // Data to insert if not found
+        'name' => 'Sunrise High School',
+        'password' => bcrypt('your_password_here'),
+        'role' => 'school',
+        'Contact_Number' => '1112223333',
+    ]
+);
         SchoolProfile::create([
             'user_id' => $schoolUser->id,
             'reg_no' => 'SCH-2025-001',

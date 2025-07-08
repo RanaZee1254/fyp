@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->string('student_name');
             $table->string('student_class');
             $table->integer('student_age');
-             $table->string('image')->nullable();
+             $table->string('image');
             $table->timestamps();
         });
     }

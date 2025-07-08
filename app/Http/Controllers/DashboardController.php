@@ -19,6 +19,7 @@ public function index()
 
     dd( $schools, $shops);
     return Inertia::render('Dashboard', [
+        'user'=>$user,
         'schools' => $schools,
         'shops' => $shops,
     ]);}

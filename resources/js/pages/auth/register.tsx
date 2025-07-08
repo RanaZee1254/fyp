@@ -53,7 +53,6 @@ export default function Register() {
   case 'guardians':
   case 'shopkeeper':
     registerRoute = route('register');
-
     break;
   default:
     registerRoute = route('register');
@@ -90,7 +89,7 @@ export default function Register() {
         <div className="grid gap-6">
           {/* Name */}
           <div className="grid gap-2">
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">Name(Student, School, Shop)</Label>
             <Input
               id="name"
               type="text"
@@ -324,7 +323,7 @@ export default function Register() {
                     <Button
                         type="submit"
                         className="inline-block rounded-sm border bg-blue-500 border-[#19140035] px-5 py-1.5 text-sm leading-normal text-white hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
-                        tabIndex={6}
+                         tabIndex={6}
                         disabled={processing}
                     >
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin mr-2" />}

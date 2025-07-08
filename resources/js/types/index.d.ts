@@ -1,27 +1,42 @@
 import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
-
 export interface Auth {
     user: User;
 }
-
+export type SchoolProfile = {
+  reg_no: string;
+  affiliation?: string;
+  level?: string;
+  address?: string;
+   image: string|File;
+   Contact_Number?: string;
+   name:string;
+};
+export type ShopProfile = {
+  shop_type: string;
+  Address?: string;
+  image?: string|File;
+  Contact_Number?: string;
+};
+export type User = {
+    id:string;
+  name: string;
+  email:string;
+};
 export interface BreadcrumbItem {
     title: string;
     href: string;
 }
-
 export interface NavGroup {
     title: string;
     items: NavItem[];
 }
-
 export interface NavItem {
     title: string;
     href: string;
     icon?: LucideIcon | null;
     isActive?: boolean;
 }
-
 export interface SharedData {
     name: string;
     quote: { message: string; author: string };
@@ -30,7 +45,6 @@ export interface SharedData {
     sidebarOpen: boolean;
     [key: string]: unknown;
 }
-
 export interface User {
     id: number;
     name: string;
@@ -39,5 +53,5 @@ export interface User {
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
-    [key: string]: unknown; // This allows for additional properties...
+    [key: string]: unknown;
 }

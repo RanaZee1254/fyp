@@ -73,8 +73,35 @@ return [
     ],
 
 ],
+'migrations' => 'migrations',
 
+/*connecting School Profile Database*/
+'schoolProfile' => [
+    'driver' => 'mysql',
+    'host' => env('DB_HOST', '127.0.0.1'),
+    'port' => env('DB_PORT', '3306'),
+    'database' => env('SCHOOL_DB_DATABASE', 'your_school_db'),
+    'username' => env('SCHOOL_DB_USERNAME', 'root'),
+    'password' => env('SCHOOL_DB_PASSWORD', ''),
+    'charset' => 'utf8mb4',
+    'collation' => 'utf8mb4_unicode_ci',
+    'prefix' => '',
+    'strict' => true,
+    'engine' => null,
+],
 
-    'migrations' => 'migrations',
-
+/*connecting Shop Profile Database*/
+'shopProfile' => [
+    'driver' => 'mysql',
+    'host' => env('DB_SHOP_PROFILE_HOST', '127.0.0.1'),
+    'port' => env('DB_SHOP_PROFILE_PORT', '3306'),
+    'database' => env('DB_SHOP_PROFILE_DATABASE', 'shopProfile'),
+    'username' => env('DB_SHOP_PROFILE_USERNAME', 'root'),
+    'password' => env('DB_SHOP_PROFILE_PASSWORD', ''),
+    'charset' => 'utf8mb4',
+    'collation' => 'utf8mb4_unicode_ci',
+    'prefix' => '',
+    'strict' => true,
+    'engine' => null,
+],
 ];

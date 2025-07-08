@@ -6,17 +6,16 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('school_profiles', function (Blueprint $table) {
-            $table->id()->unique();
+            $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('email')->default('school@example.com');
-            $table->string('School_name')->nullable();
-            $table->string('School_contact')->default('12345678');
-            $table->string('Fee_structure')->default('12345');
-            $table->string('reg_no')->default('sch-1234-123');
-            $table->string('affiliation')->nullable();
-            $table->string('level')->nullable();
+            $table->string('School_name');
+            $table->string('School_contact');
+            $table->string('Fee_structure');
+            $table->string('reg_no');
+            $table->string('affiliation');
+            $table->string('level');
             $table->string('address')->type('string');
-            $table->string('image')->nullable();
+            $table->string('image');
             $table->timestamps();
         });
     }
