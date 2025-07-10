@@ -14,14 +14,20 @@ export type SchoolProfile = {
 };
 export type ShopProfile = {
   shop_type: string;
-  Address?: string;
+  address?: string;
   image?: string|File;
   Contact_Number?: string;
+  email:string;
+  name:string;
 };
 export type User = {
     id:string;
   name: string;
   email:string;
+  Contact_Number:string;
+  image:string;
+  SchoolProfile?:SchoolProfile;
+  ShopProfile?:ShopProfile;
 };
 export interface BreadcrumbItem {
     title: string;
@@ -53,5 +59,11 @@ export interface User {
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
+     Contact_Number:string;
+  image:string;
+  role: 'school' | 'shopkeeper';
+  schoolProfile?: SchoolProfile;
+  shopProfile?: ShopProfile;
+  parentProfile?: ParentProfile;
     [key: string]: unknown;
 }

@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->string('reg_no');
             $table->string('affiliation');
             $table->string('level');
-            $table->string('address')->type('string');
+            $table->string('address');
             $table->string('image');
             $table->timestamps();
         });

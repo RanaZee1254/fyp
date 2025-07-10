@@ -22,4 +22,5 @@ public function getShopProfile()
     $profile = SchoolProfile::where('user_id', $userId)->first();
 
     return response()->json($profile);
-}}
+}
+}

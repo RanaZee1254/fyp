@@ -13,8 +13,8 @@ type RegisterForm = {
   password: string;
   password_confirmation: string;
   Contact_Number: string;
-  Address:string;
-  Image:string | File;
+  address:string;
+  image: File|null;
   role: string;
   // Guardian-specific
   student_name?: string;
@@ -42,11 +42,12 @@ export default function Register() {
     affiliation: '',
     shop_type: '',
     level: '',
-    Address: '',
-    Image:'',
+    address: '',
+    image:null,
   });
   const submit: FormEventHandler = (e) => {
   e.preventDefault();
+  console.log('Submitting data:', data);
   let registerRoute: string;
   switch (data.role) {
   case 'school':
@@ -58,9 +59,10 @@ export default function Register() {
     registerRoute = route('register');
     break;
 }
-  post(registerRoute, {
-    onFinish: () => reset('password', 'password_confirmation'),
-  });
+ post(registerRoute, {
+  forceFormData: true,
+  onFinish: () => reset('password', 'password_confirmation'),
+});
 };
   const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const role = e.target.value;
@@ -169,36 +171,36 @@ export default function Register() {
           </div>
           {/* Address */}
           <div className="grid gap-2">
-            <Label htmlFor="Address">Address</Label>
+            <Label htmlFor="address">Address</Label>
             <Input
-              id="Address"
+              id="address"
               type="text"
               tabIndex={6}
               autoComplete="text"
-              value={data.Address}
-              onChange={(e) => setData('Address', e.target.value)}
+              value={data.address}
+              onChange={(e) => setData('address', e.target.value)}
               disabled={processing}
-              placeholder="Address"
+              placeholder="address"
             />
-            <InputError message={errors.Address} />
+            <InputError message={errors.address} />
           </div>
            {/* Image*/}
           <div className="grid gap-2">
-            <Label htmlFor="Image">Image</Label>
+            <Label htmlFor="image">image</Label>
             <Input
               id="image"
               type="file"
               tabIndex={6}
               autoComplete=" "
               onChange={(e) => {
-            if (e.target.files && e.target.files[0]) {
-             setData('Image', e.target.files[0]);
-               }
+               if (e.target.files && e.target.files[0]) {
+               setData('image', e.target.files[0]);
+             }
              }}
               disabled={processing}
-              placeholder="Image"
+              placeholder="image"
             />
-            <InputError message={errors.Image} />
+            <InputError message={errors.image} />
           </div>
           {/* Role */}
           <div className="grid gap-2">
@@ -322,7 +324,8 @@ export default function Register() {
           </div>
                     <Button
                         type="submit"
-                        className="inline-block rounded-sm border bg-blue-500 border-[#19140035] px-5 py-1.5 text-sm leading-normal text-white hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                        className="inline-block rounded-sm border bg-blue-500 border-[#19140035] px-5 py-1.5 text-sm leading-normal
+                         text-white hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
                          tabIndex={6}
                         disabled={processing}
                     >

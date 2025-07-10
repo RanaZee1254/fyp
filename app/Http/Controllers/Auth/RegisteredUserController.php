@@ -4,8 +4,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\SchoolProfile;
 use App\Models\ParentProfile;
-use App\Models\ShopProfile;
-use Illuminate\Http\RedirectResponse;
+use App\Models\ShopProfile; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -21,42 +20,40 @@ class RegisteredUserController extends Controller
     {
         return Inertia::render('auth/register');
     }
-
     /**
      * Handle an incoming registration request.
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-   public function store(Request $request)
+  public function store(Request $request)
 {
     $request->validate([
         'name' => 'required|string|max:255',
         'email' => 'required|string|email|max:255|unique:users',
         'password' => ['required', 'confirmed', Rules\Password::defaults()],
         'Contact_Number' => 'required|string|max:20',
-        'Address' => 'required|string|max:255',
+        'address' => 'required|string|max:255',
         'role' => 'required|in:school,guardians,shopkeeper',
-
-        // Conditional validation
+        'image' => 'required|file|image|max:2048',
+        // Conditional
         'school_reg_no' => 'required_if:role,school',
         'affiliation' => 'required_if:role,school',
         'level' => 'required_if:role,school',
-
         'student_name' => 'required_if:role,guardians',
         'student_age' => 'required_if:role,guardians',
         'student_class' => 'required_if:role,guardians',
-
         'shop_type' => 'required_if:role,shopkeeper',
     ]);
+    $imagePath = $request->file('image')->store('uploads', 'public');
     $user = User::create([
         'name' => $request->name,
         'email' => $request->email,
-        'password' => Hash::make($request->password),
+        'password' => $request->password,
         'Contact_Number' => $request->Contact_Number,
-        'Address' => $request->Address,
+        'address' => $request->address,
         'role' => $request->role,
+        'image' => $imagePath,
     ]);
-    // Create related profile
     switch ($request->role) {
         case 'school':
             SchoolProfile::create([
@@ -81,9 +78,7 @@ class RegisteredUserController extends Controller
             ]);
             break;
     }
-    // Log the user in
     Auth::login($user);
-    return redirect()->route('dashboard');
-
-}
-}
+   return Inertia::render('dashboard', [
+  ],
+);}}
