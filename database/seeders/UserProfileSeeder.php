@@ -13,14 +13,14 @@ class UserProfileSeeder extends Seeder
         // Create a school user and profile
         $schoolUser = User::firstOrCreate(
 ['email' => 'school@example.com'], 
-    [ // Data to insert if not found
+    [
         'name' => 'Sunrise High School',
         'password' => bcrypt('your_password_here'),
         'role' => 'school',
         'Contact_Number' => '1112223333',
     ]
 );
-        SchoolProfile::create([
+        SchoolProfile::Create([
             'user_id' => $schoolUser->id,
             'reg_no' => 'SCH-2025-001',
             'affiliation' => 'Cambridge',
@@ -29,7 +29,8 @@ class UserProfileSeeder extends Seeder
             'image'=>'sample.jpg',
         ]);
         // Create a shopkeeper user and profile
-        $shopUser = User::create([
+        $shopUser = User::firstOrCreate([],
+        [
             'name' => 'City Bookstore',
             'email' => 'shopkeeper@example.com',
            'password' => bcrypt('password'),
@@ -43,7 +44,7 @@ class UserProfileSeeder extends Seeder
             'image'=>'sample.jpg',
         ]);
         // Create a parent user and profile
-        $parentUser = User::create([
+        $parentUser = User::firstOrCreate([],[
             'name' => 'abc',
             'email' => 'parent@example.com',
             'password' => bcrypt('password'),
@@ -56,6 +57,7 @@ class UserProfileSeeder extends Seeder
             'student_class' => 'Grade 4',
             'student_age' => 9,
             'image'=>'sample.jpg',
+            'address'=>'123 street'
         ]);
     }
 }

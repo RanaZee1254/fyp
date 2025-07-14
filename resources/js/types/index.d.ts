@@ -64,6 +64,5 @@ export interface User {
   role: 'school' | 'shopkeeper';
   schoolProfile?: SchoolProfile;
   shopProfile?: ShopProfile;
-  parentProfile?: ParentProfile;
     [key: string]: unknown;
 }

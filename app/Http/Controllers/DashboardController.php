@@ -8,17 +8,14 @@ class DashboardController extends Controller {
 public function index()
 {
     $user = Auth::user();
-    // Fetch school records (could be all or just those owned by user)
-    $schools = SchoolProfile::with('user') // if needed
+    $schools = SchoolProfile::with('user')
         ->select('reg_no', 'affiliation', 'level', 'address')
         ->get();
-    // Fetch shop records
-    $shops = ShopProfile::with('user') // if needed
-        ->select('shop_type', 'address')
+    $shops = ShopProfile::with('user') 
+        ->select('shop_type', 'address','name')
         ->get();
-
     dd( $schools, $shops);
-    return Inertia::render('Dashboard', [
+    return Inertia::render('dashboard', [
         'user'=>$user,
         'schools' => $schools,
         'shops' => $shops,

@@ -10,8 +10,9 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('student_name');
             $table->string('student_class');
+            $table->string('address')->nullable();
             $table->integer('student_age');
-             $table->string('image');
+            $table->string('image');
             $table->timestamps();
         });
     }

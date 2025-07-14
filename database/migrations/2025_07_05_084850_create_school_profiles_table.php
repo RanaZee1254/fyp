@@ -8,13 +8,12 @@ return new class extends Migration {
         Schema::create('school_profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('School_name');
-            $table->string('School_contact');
-            $table->string('Fee_structure');
+            $table->string('School_name')->nullable();
+            $table->string('address');
+            $table->string('School_contact')->nullable();
             $table->string('reg_no');
             $table->string('affiliation');
             $table->string('level');
-            $table->string('address');
             $table->string('image');
             $table->timestamps();
         });
@@ -24,3 +23,4 @@ return new class extends Migration {
         Schema::dropIfExists('school_profiles');
     }
 };
+

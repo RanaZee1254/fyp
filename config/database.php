@@ -1,24 +1,8 @@
 <?php
-
 use Illuminate\Support\Str;
-
 return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Default Database Connection Name
-    |--------------------------------------------------------------------------
-    |
-    | Here you may specify which of the database connections below you wish
-    | to use as your default connection for database operations. This is
-    | the connection which will be utilized unless another connection
-    | is explicitly specified when you execute a query / statement.
-    |
-    */
-
     'default' => env('DB_CONNECTION', 'mysql'),
  'connections' => [
-
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DB_URL'),
@@ -43,15 +27,12 @@ return [
         'update_date_on_publish' => true,
     ],
   'redis' => [
-
         'client' => env('REDIS_CLIENT', 'phpredis'),
-
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
             'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
             'persistent' => env('REDIS_PERSISTENT', false),
         ],
-
         'default' => [
             'url' => env('REDIS_URL'),
             'host' => env('REDIS_HOST', '127.0.0.1'),
@@ -60,7 +41,6 @@ return [
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_DB', '0'),
         ],
-
         'cache' => [
             'url' => env('REDIS_URL'),
             'host' => env('REDIS_HOST', '127.0.0.1'),
@@ -69,18 +49,15 @@ return [
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_CACHE_DB', '1'),
         ],
-
     ],
-
 ],
 'migrations' => 'migrations',
-
 /*connecting School Profile Database*/
 'schoolProfile' => [
     'driver' => 'mysql',
     'host' => env('DB_HOST', '127.0.0.1'),
     'port' => env('DB_PORT', '3306'),
-    'database' => env('SCHOOL_DB_DATABASE', 'your_school_db'),
+    'database' => env('SCHOOL_DB_DATABASE', 'schoolProfile'),
     'username' => env('SCHOOL_DB_USERNAME', 'root'),
     'password' => env('SCHOOL_DB_PASSWORD', ''),
     'charset' => 'utf8mb4',
@@ -89,7 +66,6 @@ return [
     'strict' => true,
     'engine' => null,
 ],
-
 /*connecting Shop Profile Database*/
 'shopProfile' => [
     'driver' => 'mysql',

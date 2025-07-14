@@ -1,27 +1,39 @@
-import { UserInfo } from '@/components/user-info';
 import AppLayout from '@/layouts/app-layout';
-import {type ShopProfile,type BreadcrumbItem} from '@/types';
+import {type BreadcrumbItem} from '@/types';
 import { Head } from '@inertiajs/react';
-const breadcrumbs: BreadcrumbItem[] = [
+const breadcrumbs: BreadcrumbItem[] = [ 
   { title: 'Dashboard', href: '/dashboard' },
 ];
+interface ShopProfile {
+name:string;
+address:string;
+shop_type:string;
+}
+interface SchoolProfile{
+   reg_no: string;
+  affiliation?: string;
+  level?: string;
+  address?: string;
+   image: string|File;
+   Contact_Number?: string;
+   name:string;
+}
 interface User {
   name: string;
+   address?: string;
    Contact_Number:string;
   image:string;
-  role: 'school' | 'shopkeeper' | 'parent';
+  role: 'school' | 'shopkeeper';
   ShopProfile?: ShopProfile;
+  SchoolProfile?:SchoolProfile;
 }
 interface UserData {
   auth: {
     user: User;
   };
 }
-console.log(UserInfo)
-export default function Dashboard({ auth }: UserData) {
+export default function Dashboard ({ auth }: UserData) {
   const { user } = auth;
-  console.log(user);
-  console.log('Loading component:',Dashboard);
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title={`Dashboard`} />
@@ -35,9 +47,11 @@ export default function Dashboard({ auth }: UserData) {
               <img src={`/storage/${user.image}`} alt="Profile image" /></div>
               </div>
                     <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                    <p>Shop Type: {user.ShopProfile?.name}</p>
+                    <p>Shop Type: {user.ShopProfile?.shop_type}</p>
+                    {user.address}
                      </div>
               <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
+               <p>School : {user.SchoolProfile?.reg_no }</p>
                </div>
          </div>
          </div>
