@@ -19,16 +19,21 @@ const breadcrumbs: BreadcrumbItem[] = [
 type ProfileForm = {
     name: string;
     email: string;
+    address: string;
+    contactNumber?: string;
+    image?: string | File;
 };
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
     const { auth } = usePage<SharedData>().props;
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
-        name: auth.user.name,
-        email: auth.user.email,
-    });
+       name: auth.user.name || '',
+    email: auth.user.email || '',
+    address: typeof auth.user.address === 'string' ? auth.user.address : '',
+    contactNumber: typeof auth.user.contactNumber === 'string' ? auth.user.contactNumber : '',
+    image: typeof auth.user.image === 'string' ? auth.user.image : '',
+});
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-
         patch(route('profile.update'), {
             preserveScroll: true,
         });
@@ -38,7 +43,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
             <Head title="Profile settings" />
             <SettingsLayout>
                 <div className="space-y-6">
-                    <HeadingSmall title="Profile information" description="Update your name and email address" />
+                    <HeadingSmall title="Profile information" description="Update your name and other data here" />
                     <form onSubmit={submit} className="space-y-6">
                         <div className="grid gap-2">
                             <Label htmlFor="name">Name</Label>
@@ -65,7 +70,55 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 autoComplete="username"
                                 placeholder="Email address"
                             />
+
                             <InputError className="mt-2" message={errors.email} />
+                        </div>
+                                <div className="grid gap-2">
+                                       <Label htmlFor="address">Address</Label>
+
+                            <Input
+                                id="address"
+                                type="text"
+                                className="mt-1 block w-full"
+                                value={data.address}
+                                onChange={(e) => setData('address', e.target.value)}
+                                required
+                                autoComplete="address"
+                                placeholder="Address"
+                            />
+
+                            <InputError className="mt-2" message={errors.address} />
+                        </div>
+                         <div className="grid gap-2">
+                                       <Label htmlFor="contactNumber">Contact Number</Label>
+
+                            <Input
+                                id="contactNumber"
+                                type="text"
+                                className="mt-1 block w-full"
+                                value={data.contactNumber}
+                                onChange={(e) => setData('contactNumber', e.target.value)}
+                                required
+                                autoComplete="contactNumber"
+                                placeholder="Contact Number"
+                            />
+
+                            <InputError className="mt-2" message={errors.contactNumber} />
+                        </div>
+                         <div className="grid gap-2">
+                                       <Label htmlFor="image">Image</Label>
+
+                            <Input
+                                id="image"
+                                type="file"
+                                className="mt-1 block w-full"
+                                onChange={(e) =>{const file=e.target.files?.[0];
+                                    setData('image', file ? file : '');
+                                }}
+                        
+                                required
+                            />
+                            <InputError className="mt-2" message={errors.image} />
                         </div>
                         {mustVerifyEmail && auth.user.email_verified_at === null && (
                             <div>
@@ -88,8 +141,10 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 )}
                             </div>
                         )}
-                        <div className="flex items-center gap-4">
-                            <Button className="mt-2 rounded-md bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700" disabled={processing}>Save</Button>
+
+                        <div className="grid gap-2">
+                            <Button className='text-white flex items-center gap-4 bg-blue-500 w-fit' disabled={processing}>Save</Button>
+
                             <Transition
                                 show={recentlySuccessful}
                                 enter="transition ease-in-out"
@@ -97,11 +152,14 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 leave="transition ease-in-out"
                                 leaveTo="opacity-0"
                             >
-                                <p  className="mt-2 rounded-md bg-blue-600 px-4 py-2 text-sm text-white ">Saved</p>
+                                <p className="inline-block rounded-sm border bg-blue-500 border-[#19140035] px-5 py-1.5 text-sm leading-normal
+                         text-white hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                        >Saved</p>
                             </Transition>
                         </div>
                     </form>
                 </div>
+
                 <DeleteUser />
             </SettingsLayout>
         </AppLayout>

@@ -3,14 +3,12 @@ import createServer from '@inertiajs/react/server';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import ReactDOMServer from 'react-dom/server';
 import { type RouteName, route } from 'ziggy-js';
-
-const appName = import.meta.env.VITE_APP_NAME || 'SRS';
-
+const appName = import.meta.env.VITE_APP_NAME || 'School Recommendation System';
 createServer((page) =>
     createInertiaApp({
         page,
         render: ReactDOMServer.renderToString,
-        title: (title) => `${title} - ${appName}`,
+        title: (title) => `${title} - ${appName} - SSR`,
         resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx')),
         setup: ({ App, props }) => {
             /* eslint-disable */
@@ -23,7 +21,6 @@ createServer((page) =>
                     location: new URL(page.props.ziggy.location),
                 });
             /* eslint-enable */
-
             return <App {...props} />;
         },
     }),

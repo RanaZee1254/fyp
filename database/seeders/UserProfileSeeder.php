@@ -12,12 +12,15 @@ class UserProfileSeeder extends Seeder
     {
         // Create a school user and profile
         $schoolUser = User::firstOrCreate(
-['email' => 'school@example.com'], 
+[], 
     [
+        'email' => 'school@example.com',
         'name' => 'Sunrise High School',
         'password' => bcrypt('your_password_here'),
         'role' => 'school',
         'Contact_Number' => '1112223333',
+         'image'=>'sample.jpg',
+            'address' => '123 Main St',
     ]
 );
         SchoolProfile::Create([
@@ -25,8 +28,8 @@ class UserProfileSeeder extends Seeder
             'reg_no' => 'SCH-2025-001',
             'affiliation' => 'Cambridge',
             'level' => 'Secondary',
-            'address' => '123 Main St',
             'image'=>'sample.jpg',
+            'address' => '123 Main St',
         ]);
         // Create a shopkeeper user and profile
         $shopUser = User::firstOrCreate([],
@@ -44,20 +47,24 @@ class UserProfileSeeder extends Seeder
             'image'=>'sample.jpg',
         ]);
         // Create a parent user and profile
-        $parentUser = User::firstOrCreate([],[
-            'name' => 'abc',
-            'email' => 'parent@example.com',
-            'password' => bcrypt('password'),
-            'role' => 'guardian',
-            'Contact_Number' => '11223344',
-        ]);
-        ParentProfile::create([
-            'user_id' => $parentUser->id,
-            'student_name' => 'Mr x',
-            'student_class' => 'Grade 4',
-            'student_age' => 9,
-            'image'=>'sample.jpg',
-            'address'=>'123 street'
-        ]);
-    }
+       $parentUser = User::firstOrCreate(
+    ['email' => 'parent@example.com'],
+    [
+        'name' => 'abc',
+        'password' => bcrypt('password'),
+        'role' => 'guardian',
+        'Contact_Number' => '11223344',
+    ]
+);
+
+if ($parentUser && $parentUser->id) {
+    ParentProfile::create([
+        'user_id' => $parentUser->id,
+        'student_name' => 'Mr x',
+        'student_class' => 'Grade 4',
+        'student_age' => 9,
+        'image' => 'sample.jpg',
+        'address' => '123 street'
+    ]);
 }
+}}

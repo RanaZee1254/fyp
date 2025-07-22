@@ -9,12 +9,12 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('School_name')->nullable();
-            $table->string('address');
+            $table->string('address')->default('address')->change();
             $table->string('School_contact')->nullable();
             $table->string('reg_no');
             $table->string('affiliation');
             $table->string('level');
-            $table->string('image');
+            $table->string('image')->default('image.jpg')->change();
             $table->timestamps();
         });
     }

@@ -7,17 +7,19 @@ use Inertia\Inertia;
 class DashboardController extends Controller {
 public function index()
 {
+    dd('code ended 2');
     $user = Auth::user();
     $schools = SchoolProfile::with('user')
-        ->select('reg_no', 'affiliation', 'level', 'address')
+        ->select('reg_no', 'affiliation', 'level', 'address','name','email','contact')
         ->get();
     $shops = ShopProfile::with('user') 
-        ->select('shop_type', 'address','name')
+        ->select('shop_type', 'address','name','email','contact')
         ->get();
     dd( $schools, $shops);
+    dd('code ended 2');
     return Inertia::render('dashboard', [
         'user'=>$user,
         'schools' => $schools,
         'shops' => $shops,
-    ]);}
- }
+    ]);
+ }}
