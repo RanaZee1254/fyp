@@ -6,7 +6,6 @@ import { createRoot } from 'react-dom/client';
 import { initializeTheme } from './hooks/use-appearance';
 
 const appName = import.meta.env.VITE_APP_NAME || 'SRS';
-
 createInertiaApp({
     title: (title) => `${title} - ${appName} - CSR`,
     resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx')),

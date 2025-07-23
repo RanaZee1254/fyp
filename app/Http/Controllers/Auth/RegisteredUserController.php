@@ -46,41 +46,41 @@ class RegisteredUserController extends Controller
 
     $imagePath = $request->file('image')->store('uploads', 'public');
     $user = User::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password' => $request->password,
-        'Contact_Number' => $request->Contact_Number,
-        'address' => $request->address,
-        'role' => $request->role,
+        'name' => $request->input('name'),
+        'email' => $request->input('email'),
+        'password' => $request->input('password'),
+        'Contact_Number' => $request->input('Contact_Number'),
+        'address' => $request->input('address'),
+        'role' => $request->input('role'),
         'image' => $imagePath,
     ]);
-
-    switch ($request->role) {
+// dd('code ended 4');
+    switch ($request->input('role')) {
         case 'school':
             SchoolProfile::create([
                 'user_id' => $user->id,
-                'school_reg_no' => $request->school_reg_no,
-                'affiliation' => $request->affiliation,
-                'level' => $request->level,
+                'school_reg_no' => $request->input('school_reg_no'),
+                'affiliation' => $request->input('affiliation'),
+                'level' => $request->input('level'),
             ]);
             break;
         case 'guardians':
             ParentProfile::create([
                 'user_id' => $user->id,
-                'student_name' => $request->student_name,
-                'student_age' => $request->student_age,
-                'student_class' => $request->student_class,
+                'student_name' => $request->input('student_name'),
+                'student_age' => $request->input('student_age'),
+                'student_class' => $request->input('student_class'),
             ]);
             break;
         case 'shopkeeper':
             ShopProfile::create([
                 'user_id' => $user->id,
-                'shop_type' => $request->shop_type,
+                'shop_type' => $request->input('shop_type'),
             ]);
             break;
     }
-    dd('code ended 4');
-    Auth::login($user);
+    // dd('code ended 4');
+    // Auth::login($user);
     return Inertia::render('dashboard', [],);
     }
 }

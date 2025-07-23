@@ -20,7 +20,6 @@ class UserProfileSeeder extends Seeder
         'role' => 'school',
         'Contact_Number' => '1112223333',
          'image'=>'sample.jpg',
-            'address' => '123 Main St',
     ]
 );
         SchoolProfile::Create([

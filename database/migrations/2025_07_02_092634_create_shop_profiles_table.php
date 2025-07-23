@@ -9,7 +9,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('shop_type');
-
+            $table->string('email')->nullable();
             $table->timestamps();
         });
     }

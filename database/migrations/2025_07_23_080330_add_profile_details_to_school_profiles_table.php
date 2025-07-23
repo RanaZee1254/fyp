@@ -9,13 +9,14 @@ return new class extends Migration {
         Schema::table('school_profiles', function (Blueprint $table) {
             $table->string('image')->nullable();
             $table->string('address')->nullable();
+            $table->string('email')->nullable();
         });
     }
 
     public function down()
     {
         Schema::table('school_profiles', function (Blueprint $table) {
-            $table->dropColumn(['image', 'address']);
+            // $table->dropColumn(['address','image']);
         });
     }
 };

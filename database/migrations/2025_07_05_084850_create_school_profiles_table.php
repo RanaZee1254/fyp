@@ -8,9 +8,9 @@ return new class extends Migration {
         Schema::create('school_profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('School_name')->nullable();
+            $table->string('name')->nullable();
             $table->string('address')->default('address')->change();
-            $table->string('School_contact')->nullable();
+            $table->string('Contact_Number')->nullable();
             $table->string('reg_no');
             $table->string('affiliation');
             $table->string('level');
