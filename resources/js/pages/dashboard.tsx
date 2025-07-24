@@ -8,6 +8,9 @@ interface ShopProfile {
 name:string;
 address:string;
 shop_type:string;
+id:number;
+Contact_Number?: string;
+image: string|File;
 }
 interface SchoolProfile{
    reg_no: string;
@@ -17,11 +20,13 @@ interface SchoolProfile{
    image: string|File;
    Contact_Number?: string;
    name:string;
+  id: number;
 }
 interface User {
   name: string;
    address?: string;
    Contact_Number:string;
+   avatar?: string;
   image:string;
   role: 'school' | 'shopkeeper';
   ShopProfile?: ShopProfile;
@@ -34,18 +39,19 @@ interface UserData {
   schools: SchoolProfile[];
   shops: ShopProfile[];
 }
-export default function Dashboard ({ auth, schools, shops }: UserData) {
+export default function Dashboard({ auth, schools, shops }: UserData) {
   const { user } = auth;
+  //  if (!auth?.user) return <div>Please log in to view your dashboard.</div>;
   return (
+   
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title={`Dashboard`} />
-      <h1>Welcome {user.name}</h1>
+      <h1>Welcome {user?.name}</h1>
       <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
         <div className="grid auto-rows-min gap-4 md:grid-cols-3">
             <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-              {user.Contact_Number}
               {schools.map((school: SchoolProfile) => (
-                <div key={school.reg_no}>
+                <div key={school.id}>
                   <p>School Name: {school.name}</p>
                   <p>Registration No: {school.reg_no}</p>
                   <p>Affiliation: {school.affiliation}</p>
@@ -57,17 +63,17 @@ export default function Dashboard ({ auth, schools, shops }: UserData) {
             </div>
             <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
               {shops.map((shop: ShopProfile) => (
-                <div key={shop.name}>
+                <div key={shop.id}>
                   <p>Shop Name: {shop.name}</p>
                   <p>Address: {shop.address}</p>
                 </div>
               ))}
               </div> 
               <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-              <p>Role: {user.role}</p>
-               </div>
+                <p>Role:</p>
+              </div>
          </div>
          </div>
     </AppLayout>
-  );
+);
 }

@@ -25,6 +25,7 @@ export type User = {
   name: string;
   email:string;
   Contact_Number:string;
+  avatar?: string;
   image:string;
   SchoolProfile?:SchoolProfile;
   ShopProfile?:ShopProfile;
@@ -55,7 +56,7 @@ export interface User {
     id: number;
     name: string;
     email: string;
-    avatar?: string;
+    avatar: string;
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;

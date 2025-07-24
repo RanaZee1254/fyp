@@ -16,7 +16,9 @@ return new class extends Migration {
             if (!Schema::hasColumn('shop_profiles', 'Contact_Number')) {
                 $table->string('Contact_Number')->nullable();
             }
-
+            if (!Schema::hasColumn('shop_profiles', 'email')) {
+                $table->string('email')->nullable();
+            }
             if (!Schema::hasColumn('shop_profiles', 'image')) {
                 $table->string('image')->nullable();
             }
@@ -30,7 +32,7 @@ return new class extends Migration {
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            // $table->dropColumn(['role', 'Contact_Number', 'image', 'address']);
+            $table->dropColumn(['Contact_Number', 'image', 'address','email', 'name']);
         });
     }
 };

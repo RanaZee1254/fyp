@@ -46,6 +46,7 @@ export default function Welcome() {
                                 If you have any questions, feel free to contact our support team.
                                 <p>Mail us at <br></br><a  className="inline-block bg-blue-500 rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-white hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
                                  href="https:\\zee.rana1254@gmail.com">gmail</a></p>
+                                 <p>Or</p>
                                 <p>Call us at 0328-55-00-558 </p>
                                 
                                 <a  className="inline-block rounded-sm border border-[#19140035] bg-blue-500 px-5 py-1.5 text-sm leading-normal text-white hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
