@@ -7,8 +7,10 @@ class ShopProfile extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
+        'shop_name',
         'shop_type',
         'address',
+        'image',
     ];
     public function user()
     {

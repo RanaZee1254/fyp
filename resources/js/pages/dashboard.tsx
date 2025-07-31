@@ -5,28 +5,30 @@ const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Dashboard', href: '/dashboard' },
 ];
 interface ShopProfile {
-name:string;
-address:string;
-shop_type:string;
-id:number;
-Contact_Number?: string;
+  email: string;
+  name:string;
+  address:string;
+  shop_type:string;
+  id:number;
+  Contact_Number?: string;
 image: string|File;
 }
 interface SchoolProfile{
-   reg_no: string;
+  reg_no: string;
+  email: string;
   affiliation?: string;
   level?: string;
   address?: string;
-   image: string|File;
-   Contact_Number?: string;
-   name:string;
+  image: string|File;
+  Contact_Number?: string;
+  name:string;
   id: number;
 }
 interface User {
   name: string;
-   address?: string;
-   Contact_Number:string;
-   avatar?: string;
+  address?: string;
+  Contact_Number:string;
+  avatar?: string;
   image:string;
   role: 'school' | 'shopkeeper';
   ShopProfile?: ShopProfile;
@@ -34,44 +36,43 @@ interface User {
 }
 interface UserData {
   auth: {
-    user: User;
+  user: User;
   };
   schools: SchoolProfile[];
   shops: ShopProfile[];
 }
 export default function Dashboard({ auth, schools, shops }: UserData) {
   const { user } = auth;
-  //  if (!auth?.user) return <div>Please log in to view your dashboard.</div>;
+   if (!auth?.user) return <div>Please log in to view your dashboard.</div>;
   return (
-   
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title={`Dashboard`} />
       <h1>Welcome {user?.name}</h1>
       <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
         <div className="grid auto-rows-min gap-4 md:grid-cols-3">
             <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-              {schools.map((school: SchoolProfile) => (
-                <div key={school.id}>
-                  <p>School Name: {school.name}</p>
-                  <p>Registration No: {school.reg_no}</p>
-                  <p>Affiliation: {school.affiliation}</p>
-                  <p>Level: {school.level}</p>
-                  <p>Address: {school.address}</p>
-                  <p>Contact Number: {school.Contact_Number}</p>
-                </div>
-              ))}  
+              {schools.map((school: SchoolProfile) => {
+                return (
+                  <div key={school.email}>
+                    <p>School Name: {school.name}</p>
+                    <p>Address: {school.address}</p>
+                    <p>Contact Number: {school.Contact_Number}</p>
+                  </div>
+                );
+              })}
             </div>
             <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-              {shops.map((shop: ShopProfile) => (
-                <div key={shop.id}>
-                  <p>Shop Name: {shop.name}</p>
-                  <p>Address: {shop.address}</p>
-                </div>
-              ))}
-              </div> 
-              <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                <p>Role:</p>
-              </div>
+              {shops.map((shop: ShopProfile) => {
+                return (
+                  <div key={shop.email}>
+                    <p>Shop Name: {shop.name}</p>
+                    <p>Address: {shop.address}</p>
+                    <p>{shop.name}</p>
+                    <p>Contact Number: {shop.Contact_Number}</p>
+                  </div>
+                );
+              })}
+            </div>
          </div>
          </div>
     </AppLayout>

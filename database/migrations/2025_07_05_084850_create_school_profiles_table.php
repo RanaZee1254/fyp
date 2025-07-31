@@ -6,17 +6,16 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('school_profiles', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('name')->nullable();
-            $table->string('address')->default('address')->change();
-            $table->string('Contact_Number')->nullable();
-            $table->string('reg_no');
-            $table->string('affiliation');
-            $table->string('level');
-            $table->string('image')->default('image.jpg')->change();
-            $table->timestamps();
-        });
+    $table->id();
+    $table->foreignId('user_id')->constrained()->onDelete('cascade');
+    $table->string('name');
+    $table->string('reg_no')->nullable();
+    $table->string('affiliation')->nullable();
+    $table->string('level')->nullable();
+    // $table->string('image')->nullable();
+    $table->string('contact_number')->nullable(); // snake_case!
+    $table->timestamps();
+});
     }
     public function down(): void
     {

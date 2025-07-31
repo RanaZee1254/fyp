@@ -1,15 +1,19 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\DetailsController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 Route::get('/', function () {
-    return Inertia::render('welcome');
+return Inertia::render('welcome');
 })->name('home');
-// dd('code ended 1');
+// // dd('code ended 1');
+// Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+// Route::post('/register', [RegisteredUserController::class, 'store'])->name('register.store');
+Route::get('/details', [DetailsController::class, 'store'])->name('details');
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';

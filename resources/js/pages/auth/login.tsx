@@ -46,7 +46,6 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             onChange={(e) => setRole(e.target.value as LoginRole)}
                             className="border px-3 py-2 rounded-md"
                         >
-                            <option value="default">Select Role</option>
                             <option value="shopkeeper">Shopkeeper</option>
                             <option value="parents">Parents</option>
                             <option value="school">School</option>

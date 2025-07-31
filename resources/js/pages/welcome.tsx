@@ -41,7 +41,7 @@ export default function Welcome() {
                         <div className="flex-1 rounded-br-lg rounded-bl-lg bg-white p-6 pb-12 text-[13px] leading-[20px] shadow-[inset_0px_0px_0px_1px_rgba(26,26,0,0.16)] lg:rounded-tl-lg lg:rounded-br-none lg:p-20 dark:bg-[#161615] dark:text-[#EDEDEC] dark:shadow-[inset_0px_0px_0px_1px_#fffaed2d]">
                             <h1 className="font-extrabold">School Recommendation System</h1>
                             <p className="mb-4">
-                                Welcome to our application! Finding a best school for your child becomes easy for you. Please log in or register to continue.</p>
+                                Welcome to our application! Finding a best school for your child becomes more easy for you. Please log in or register to continue.</p>
                             <p>
                                 If you have any questions, feel free to contact our support team.
                                 <p>Mail us at <br></br><a  className="inline-block bg-blue-500 rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-white hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"

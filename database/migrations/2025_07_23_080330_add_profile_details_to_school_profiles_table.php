@@ -16,7 +16,7 @@ return new class extends Migration {
     public function down()
     {
         Schema::table('school_profiles', function (Blueprint $table) {
-            // $table->dropColumn(['address','image']);
+            $table->dropColumn(['address','image']);
         });
     }
 };

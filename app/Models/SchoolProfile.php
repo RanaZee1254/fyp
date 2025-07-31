@@ -1,10 +1,14 @@
 <?php
+
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
 class SchoolProfile extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'name',
         'user_id',
@@ -12,8 +16,8 @@ class SchoolProfile extends Model
         'affiliation',
         'level',
         'image',
-        'Contact_Number',
-    ];
+        'contact_number',];
+
     public function user()
     {
         return $this->belongsTo(User::class);

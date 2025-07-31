@@ -1,4 +1,4 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import InputError from '@/components/input-error';
 import AuthLayout from '@/layouts/auth-layout';
@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import TextLink from '@/components/text-link';
 import { LoaderCircle } from 'lucide-react';
+import {route} from 'ziggy-js';
 type RegisterForm = {
   name: string;
   email: string;
@@ -16,7 +17,7 @@ type RegisterForm = {
   role: string;
 };
 export default function Register() {
-  const { data, setData, get, processing, errors, reset } = useForm<RegisterForm>({
+  const { data, setData, processing, errors, reset } = useForm<RegisterForm>({
     name: '',
     email: '',
     password: '',
@@ -25,28 +26,16 @@ export default function Register() {
     role: '',
   });
   const submit: FormEventHandler = (e) => {
-  e.preventDefault();
-  console.log('Submitting data:', data);
-  let registerRoute: string;
-  switch (data.role) {
-  case 'school':
-  case 'guardians':
-  case 'shopkeeper':
-    registerRoute = route('dashboard');
-    break;
-  default:
-    registerRoute = route('register');
-    break;
-}
- get(registerRoute, {
-  forceFormData: true,
-  onFinish: () => reset('password', 'password_confirmation'),
-});
-};
+    e.preventDefault();
+    console.log('Submitting data:', data);
+    // console.log('Available route:', route('register'));
+   router.get(route('details'), data, {
+     onFinish: () => reset('password', 'password_confirmation'),
+   });
+  };
   const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const role = e.target.value;
     setData('role', role);
-
   };
   return (
     <AuthLayout
@@ -57,7 +46,7 @@ export default function Register() {
       <form className="flex flex-col gap-6" onSubmit={submit}>
         <div className="grid gap-6">
           <div className="grid gap-2">
-            <Label htmlFor="name">Name(Student, School, Shop)</Label>
+            <Label htmlFor="name">Name (Student, School, Shop)</Label>
             <Input
               id="name"
               type="text"
@@ -111,7 +100,9 @@ export default function Register() {
               tabIndex={4}
               autoComplete="new-password"
               value={data.password_confirmation}
-              onChange={(e) => setData('password_confirmation', e.target.value)}
+              onChange={(e) =>
+                setData('password_confirmation', e.target.value)
+              }
               disabled={processing}
               placeholder="Confirm password"
             />
@@ -147,25 +138,24 @@ export default function Register() {
               <option value="shopkeeper">Shopkeeper</option>
             </select>
             <InputError message={errors.role} />
-                    <Button
-                        type="submit"
-                        className="inline-block rounded-sm border bg-blue-500 border-[#19140035] px-5 py-1.5 text-sm leading-normal
-                         text-white hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
-                         tabIndex={6}
-                        disabled={processing}
-                    >
-                        {processing && <LoaderCircle className="h-4 w-4 animate-spin mr-2" />}
-                        Create account
-                    </Button>
-                <div className="text-center text-sm text-muted-foreground mt-4">
-                    Already have an account?{' '}
-                    <TextLink href={route('login')} tabIndex={7}>
-                        Log in
-                    </TextLink>
-                </div>
-                </div>
-                </div>
-            </form>
-        </AuthLayout>
-    );
+          </div>
+          <Button
+            type="submit"
+            className="inline-block rounded-sm border bg-blue-500 border-[#19140035] px-5 py-1.5 text-sm leading-normal text-white hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+            tabIndex={6}
+            disabled={processing}
+          >
+            {processing && <LoaderCircle className="h-4 w-4 animate-spin mr-2" />}
+            Create account
+          </Button>
+          <div className="text-center text-sm text-muted-foreground mt-4">
+            Already have an account?{' '}
+            <TextLink href={route('login')} tabIndex={7}>
+              Log in
+            </TextLink>
+          </div>
+        </div>
+      </form>
+    </AuthLayout>
+  );
 }
