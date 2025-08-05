@@ -13,7 +13,7 @@ type RegisterForm = {
   email: string;
   password: string;
   password_confirmation: string;
-  Contact_Number: string;
+  contact_number: string;
   role: string;
 };
 export default function Register() {
@@ -22,14 +22,14 @@ export default function Register() {
     email: '',
     password: '',
     password_confirmation: '',
-    Contact_Number: '',
+    contact_number: '',
     role: '',
   });
   const submit: FormEventHandler = (e) => {
     e.preventDefault();
     console.log('Submitting data:', data);
     // console.log('Available route:', route('register'));
-   router.get(route('details'), data, {
+   router.post(route('register'), data, {
      onFinish: () => reset('password', 'password_confirmation'),
    });
   };
@@ -109,18 +109,18 @@ export default function Register() {
             <InputError message={errors.password_confirmation} />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="Contact_Number">Contact Number</Label>
+            <Label htmlFor="contact_number">Contact Number</Label>
             <Input
-              id="Contact_Number"
+              id="contact_number"
               type="tel"
               tabIndex={5}
               autoComplete="tel"
-              value={data.Contact_Number}
-              onChange={(e) => setData('Contact_Number', e.target.value)}
+              value={data.contact_number}
+              onChange={(e) => setData('contact_number', e.target.value)}
               disabled={processing}
               placeholder="Contact Number"
             />
-            <InputError message={errors.Contact_Number} />
+            <InputError message={errors.contact_number} />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="account_type">Account Type</Label>
@@ -134,7 +134,7 @@ export default function Register() {
             >
               <option value="">Select account type</option>
               <option value="school">School</option>
-              <option value="guardians">Guardians</option>
+              <option value="parent">Parent</option>
               <option value="shopkeeper">Shopkeeper</option>
             </select>
             <InputError message={errors.role} />

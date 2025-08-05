@@ -9,11 +9,10 @@ return new class extends Migration {
     $table->id();
     $table->foreignId('user_id')->constrained()->onDelete('cascade');
     $table->string('name');
-    $table->string('reg_no')->nullable();
-    $table->string('affiliation')->nullable();
-    $table->string('level')->nullable();
-    // $table->string('image')->nullable();
-    $table->string('contact_number')->nullable(); // snake_case!
+    $table->string('reg_no')->default('reg-123');
+    $table->string('affiliation')->default('Unknown');
+    $table->string('level')->default('Unknown');
+    $table->string('contact_number');
     $table->timestamps();
 });
     }

@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\Request;
 Route::get('/', function () {
 return Inertia::render('welcome');
 })->name('home');
-// // dd('code ended 1');
-// Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
-// Route::post('/register', [RegisteredUserController::class, 'store'])->name('register.store');
-Route::get('/details', [DetailsController::class, 'store'])->name('details');
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+// dd('code ended 1');
+    Route::get('/details', [DetailsController::class, 'create'])->name('details');
+    Route::post('/details', [DetailsController::class, 'store'])->name('details.store');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';

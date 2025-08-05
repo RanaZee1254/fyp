@@ -6,50 +6,75 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LoaderCircle } from 'lucide-react';
 import { route } from 'ziggy-js';
+
 interface ShopForm {
   shop_name: string;
   address: string;
   shop_type: string;
-  image: string | File;
-  [key: string]: string | File | undefined;
+  image: File | null;
+  [key: string]: string | File | null | undefined;
 }
+
 interface SchoolForm {
+  school_name: string;
+  address: string;
   reg_no: string;
   affiliation?: string;
   level?: string;
-  address: string;
-  image: string | File;
-  school_name: string;
-[key: string]: string | File | undefined;
+  image: File | null;
+  [key: string]: string | File | null | undefined;
 }
-type DetailsFormData = (SchoolForm | ShopForm) & { [key: string]: string | File | undefined };
+
+type Role = 'school' | 'shopkeeper';
+type DetailsFormData =
+  | (SchoolForm & { type: 'school' })
+  | (ShopForm & { type: 'shopkeeper' });
+
 interface Props {
-role: 'school' | 'shopkeeper';
+  role: Role;
 }
+
 export default function DetailsForm({ role }: Props) {
   const initialData: DetailsFormData =
     role === 'school'
       ? {
+          type: 'school',
           school_name: '',
           address: '',
           reg_no: '',
           affiliation: '',
           level: '',
-          image: '',
+          image: null,
         }
       : {
+          type: 'shopkeeper',
           shop_name: '',
           address: '',
           shop_type: '',
-          image: '',
+          image: null,
         };
-  const { data, setData, post, processing, errors } = useForm<DetailsFormData>(initialData);
+
+  const { data, setData, post, processing, errors, reset } = useForm<DetailsFormData>(initialData);
+
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('details.store'), {
+    const formData = new FormData();
+
+    // Add role explicitly for the backend
+    formData.append('role', role);
+
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        formData.append(key, value);
+      }
+    });
+
+    post(route('details.store'),  {
       forceFormData: true,
+      onSuccess: () => reset(),
     });
   };
+
   return (
     <AuthLayout title="Add Details" description={`Enter your ${role} details`}>
       <Head title="Add Details" />
@@ -60,7 +85,7 @@ export default function DetailsForm({ role }: Props) {
               <Label htmlFor="school_name">School Name</Label>
               <Input
                 id="school_name"
-                value={(data as SchoolForm).school_name}
+                value={typeof data.school_name === 'string' ? data.school_name : ''}
                 onChange={(e) => setData('school_name', e.target.value)}
               />
               <InputError message={errors.school_name} />
@@ -69,7 +94,7 @@ export default function DetailsForm({ role }: Props) {
               <Label htmlFor="address">Address</Label>
               <Input
                 id="address"
-                value={(data as SchoolForm).address}
+                value={data.address}
                 onChange={(e) => setData('address', e.target.value)}
               />
               <InputError message={errors.address} />
@@ -78,7 +103,7 @@ export default function DetailsForm({ role }: Props) {
               <Label htmlFor="reg_no">Registration No</Label>
               <Input
                 id="reg_no"
-                value={(data as SchoolForm).reg_no}
+                value={typeof data.reg_no === 'string' ? data.reg_no : ''}
                 onChange={(e) => setData('reg_no', e.target.value)}
               />
               <InputError message={errors.reg_no} />
@@ -87,7 +112,7 @@ export default function DetailsForm({ role }: Props) {
               <Label htmlFor="affiliation">Affiliation</Label>
               <Input
                 id="affiliation"
-                value={(data as SchoolForm).affiliation ?? ''}
+                value={typeof data.affiliation === 'string' ? data.affiliation : ''}
                 onChange={(e) => setData('affiliation', e.target.value)}
               />
               <InputError message={errors.affiliation} />
@@ -96,7 +121,7 @@ export default function DetailsForm({ role }: Props) {
               <Label htmlFor="level">Level</Label>
               <Input
                 id="level"
-                value={(data as SchoolForm).level ?? ''}
+                value={typeof data.level === 'string' ? data.level : ''}
                 onChange={(e) => setData('level', e.target.value)}
               />
               <InputError message={errors.level} />
@@ -106,7 +131,8 @@ export default function DetailsForm({ role }: Props) {
               <Input
                 id="image"
                 type="file"
-                onChange={(e) => setData('image', e.target.files?.[0] ?? '')}
+                accept="image/*"
+                onChange={(e) => setData('image', e.target.files?.[0] ?? null)}
               />
               <InputError message={errors.image} />
             </div>
@@ -118,7 +144,7 @@ export default function DetailsForm({ role }: Props) {
               <Label htmlFor="shop_name">Shop Name</Label>
               <Input
                 id="shop_name"
-                value={(data as ShopForm).shop_name}
+                value={typeof data.shop_name === 'string' ? data.shop_name : ''}
                 onChange={(e) => setData('shop_name', e.target.value)}
               />
               <InputError message={errors.shop_name} />
@@ -127,7 +153,7 @@ export default function DetailsForm({ role }: Props) {
               <Label htmlFor="shop_type">Shop Type</Label>
               <Input
                 id="shop_type"
-                value={(data as ShopForm).shop_type}
+                value={typeof data.shop_type === 'string' ? data.shop_type : ''}
                 onChange={(e) => setData('shop_type', e.target.value)}
               />
               <InputError message={errors.shop_type} />
@@ -136,7 +162,7 @@ export default function DetailsForm({ role }: Props) {
               <Label htmlFor="address">Address</Label>
               <Input
                 id="address"
-                value={(data as ShopForm).address}
+                value={data.address ?? ''}
                 onChange={(e) => setData('address', e.target.value)}
               />
               <InputError message={errors.address} />
@@ -146,7 +172,8 @@ export default function DetailsForm({ role }: Props) {
               <Input
                 id="image"
                 type="file"
-                onChange={(e) => setData('image', e.target.files?.[0] ?? '')}
+                accept="image/*"
+                onChange={(e) => setData('image', e.target.files?.[0] ?? null)}
               />
               <InputError message={errors.image} />
             </div>

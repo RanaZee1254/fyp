@@ -17,7 +17,7 @@ class UserProfileSeeder extends Seeder
                 'name' => 'Sunrise High School',
                 'password' => bcrypt('your_password_here'),
                 'role' => 'school',
-                'Contact_Number' => '1112223333',
+                'contact_number' => '1112223333',
                 'image' => 'sample.jpg',
                 'address' => '123 Main St',
             ]
@@ -28,7 +28,7 @@ class UserProfileSeeder extends Seeder
             'affiliation' => 'Cambridge',
             'level' => 'Secondary',
             'image' => 'sample.jpg',
-            'Contact_Number' => $schoolUser->Contact_Number,
+            'contact_number' => $schoolUser->contact_number,
             'name' => $schoolUser->name,
             'address'=> $schoolUser->address,
         ]);
@@ -38,7 +38,7 @@ class UserProfileSeeder extends Seeder
                 'name' => 'City Bookstore',
                 'password' => bcrypt('password'),
                 'role' => 'shopkeeper',
-                'Contact_Number' => '44556677',
+                'contact_number' => '44556677',
                 'image' => 'sample.jpg',
                 'address' => '45 Market Lane',
             ]
@@ -48,7 +48,7 @@ class UserProfileSeeder extends Seeder
             'shop_type' => $shopUser->shop_type ?? 'Bookshop',
             'address' => $shopUser->address,
             'image' => $shopUser->image,
-            'Contact_Number' => $shopUser->Contact_Number,
+            'contact_number' => $shopUser->contact_number,
             'name'=>$shopUser->name,
             'email' => $shopUser->email ?? 'no-email@example.com',
         ]);
@@ -57,8 +57,8 @@ class UserProfileSeeder extends Seeder
             [
                 'name' => 'abc',
                 'password' => bcrypt('password'),
-                'role' => 'guardian',
-                'Contact_Number' => '11223344',
+                'role' => 'parent',
+                'contact_number' => '11223344',
                 'image' => 'sample.jpg',
                 'address' => '123 street',
             ]
@@ -70,7 +70,7 @@ class UserProfileSeeder extends Seeder
             'student_age' => 9,
             'image' => $parentUser->image,
             'address' => $parentUser->address,
-            'Contact_Number' => $parentUser->Contact_Number,
+            'contact_number' => $parentUser->contact_number,
         ]);
     }
 }

@@ -26,21 +26,22 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // dd('code ended 1', $request->all());
         $request->validate([
             'name' => 'required|string|max:255',
            'email' => 'required|string|email|max:255|unique:users',
          'password' => ['required', 'confirmed', Rules\Password::defaults()],
-         'Contact_Number' => 'required|string|max:20',
-         'role' => 'required|in:school,guardians,shopkeeper',
+         'contact_number' => 'required|string|max:20',
+         'role' => 'required|in:school,parent,shopkeeper',
         ]);
-        $users = User::create([
+        User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'Contact_Number' => $request->Contact_Number,
+            'contact_number' => $request->contact_number,
             'role' => $request->role,
         ]);
-        event(new Registered($users));
-    return redirect()->route('details')->with(['role' => $users->role]);
+        // dd('code ended 1');
+    return redirect()->route('login');
     }
 }

@@ -17,9 +17,9 @@ interface LoginProps {
     status?: string;
     canResetPassword: boolean;
 }
-type LoginRole = 'default' | 'shopkeeper' | 'parents' | 'school';
+type LoginRole =  'shopkeeper' | 'parent' | 'school';
 export default function Login({ status, canResetPassword }: LoginProps) {
-    const [role, setRole] = useState<LoginRole>('default');
+    const [role, setRole] = useState<LoginRole>('parent');
     const { data, setData, post, processing, errors, reset } = useForm<Required<LoginForm>>({
         email: '',
         password: '',
@@ -47,7 +47,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             className="border px-3 py-2 rounded-md"
                         >
                             <option value="shopkeeper">Shopkeeper</option>
-                            <option value="parents">Parents</option>
+                            <option value="parent">parent</option>
                             <option value="school">School</option>
                         </select>
                     </div>

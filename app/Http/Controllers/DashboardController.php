@@ -10,10 +10,10 @@ public function index()
     // dd('code ended 2');
     $user = Auth::user();
     $schools = SchoolProfile::with('user')
-        ->select('reg_no', 'affiliation', 'level', 'address','name','email','Contact_Number')
+        ->select('reg_no', 'affiliation', 'level', 'address','name','email','contact_number')
         ->get();
     $shops = ShopProfile::with('user') 
-        ->select('shop_type', 'address','email','Contact_Number')
+        ->select('shop_type', 'address','email','contact_number')
         ->get();
     // dd('code ended 2');
     return Inertia::render('dashboard', [

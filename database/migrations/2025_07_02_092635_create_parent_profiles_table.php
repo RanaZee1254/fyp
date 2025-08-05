@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->string('student_class');
             $table->string('address')->nullable();
             $table->integer('student_age');
-            $table->string('Contact_Number')->nullable();
+            $table->string('contact_number')->nullable();
             $table->string('email')->default('no-email@example.com')->change();
             $table->timestamps();
         });

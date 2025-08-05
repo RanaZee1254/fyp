@@ -8,11 +8,11 @@ return new class extends Migration {
     {
         Schema::table('users', function (Blueprint $table) {
             if (!Schema::hasColumn('users', 'role')) {
-                $table->string('role');
+                $table->string('role')->notNullable();
             }
 
-            if (!Schema::hasColumn('users', 'Contact_Number')) {
-                $table->string('Contact_Number')->nullable();
+            if (!Schema::hasColumn('users', 'contact_number')) {
+                $table->string('contact_number')->nullable();
             }
 
             if (!Schema::hasColumn('users', 'image')) {
@@ -28,7 +28,7 @@ return new class extends Migration {
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            // $table->dropColumn(['role', 'Contact_Number', 'image', 'address']);
+            // $table->dropColumn(['role', 'contact_number', 'image', 'address']);
         });
     }
 };

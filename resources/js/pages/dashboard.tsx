@@ -10,7 +10,7 @@ interface ShopProfile {
   address:string;
   shop_type:string;
   id:number;
-  Contact_Number?: string;
+  contact_number?: string;
 image: string|File;
 }
 interface SchoolProfile{
@@ -20,15 +20,14 @@ interface SchoolProfile{
   level?: string;
   address?: string;
   image: string|File;
-  Contact_Number?: string;
+  contact_number?: string;
   name:string;
   id: number;
 }
 interface User {
   name: string;
   address?: string;
-  Contact_Number:string;
-  avatar?: string;
+  contact_number:string;
   image:string;
   role: 'school' | 'shopkeeper';
   ShopProfile?: ShopProfile;
@@ -43,7 +42,7 @@ interface UserData {
 }
 export default function Dashboard({ auth, schools, shops }: UserData) {
   const { user } = auth;
-   if (!auth?.user) return <div>Please log in to view your dashboard.</div>;
+  //  if (!auth?.user) return <div>Please log in to view your dashboard.</div>;
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title={`Dashboard`} />
@@ -56,7 +55,7 @@ export default function Dashboard({ auth, schools, shops }: UserData) {
                   <div key={school.email}>
                     <p>School Name: {school.name}</p>
                     <p>Address: {school.address}</p>
-                    <p>Contact Number: {school.Contact_Number}</p>
+                    <p>Contact Number: {school.contact_number}</p>
                   </div>
                 );
               })}
@@ -68,7 +67,7 @@ export default function Dashboard({ auth, schools, shops }: UserData) {
                     <p>Shop Name: {shop.name}</p>
                     <p>Address: {shop.address}</p>
                     <p>{shop.name}</p>
-                    <p>Contact Number: {shop.Contact_Number}</p>
+                    <p>Contact Number: {shop.contact_number}</p>
                   </div>
                 );
               })}

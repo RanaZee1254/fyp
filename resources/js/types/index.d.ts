@@ -9,14 +9,14 @@ export type SchoolProfile = {
   level?: string;
   address?: string;
    image: string|File;
-   Contact_Number?: string;
+   contact_number?: string;
    name:string;
 };
 export type ShopProfile = {
   shop_type: string;
   address?: string;
   image?: string|File;
-  Contact_Number?: string;
+  contact_number?: string;
   email:string;
   name:string;
 };
@@ -24,8 +24,7 @@ export type User = {
     id:string;
   name: string;
   email:string;
-  Contact_Number:string;
-  avatar?: string;
+  contact_number:string;
   image:string;
   SchoolProfile?:SchoolProfile;
   ShopProfile?:ShopProfile;
@@ -56,11 +55,10 @@ export interface User {
     id: number;
     name: string;
     email: string;
-    avatar: string;
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
-     Contact_Number:string;
+     contact_number:string;
   image:string;
   role: 'school' | 'shopkeeper';
   schoolProfile?: SchoolProfile;
