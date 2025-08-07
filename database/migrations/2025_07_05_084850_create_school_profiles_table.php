@@ -12,7 +12,7 @@ return new class extends Migration {
     $table->string('reg_no')->default('reg-123');
     $table->string('affiliation')->default('Unknown');
     $table->string('level')->default('Unknown');
-    $table->string('contact_number');
+    $table->string('contact_number')->nullable();
     $table->timestamps();
 });
     }

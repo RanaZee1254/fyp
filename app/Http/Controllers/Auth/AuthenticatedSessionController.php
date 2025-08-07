@@ -28,7 +28,7 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
         $request->session()->regenerate();
         // dd('code ended 111');
-        return redirect()->route('details', [
+        return redirect()->route('dashboard', [
             'role' => Auth::user()->role,
         ]);
     }

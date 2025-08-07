@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LoaderCircle } from 'lucide-react';
 import { route } from 'ziggy-js';
-
 interface ShopForm {
   shop_name: string;
   address: string;
@@ -14,7 +13,6 @@ interface ShopForm {
   image: File | null;
   [key: string]: string | File | null | undefined;
 }
-
 interface SchoolForm {
   school_name: string;
   address: string;
@@ -24,16 +22,13 @@ interface SchoolForm {
   image: File | null;
   [key: string]: string | File | null | undefined;
 }
-
 type Role = 'school' | 'shopkeeper';
 type DetailsFormData =
   | (SchoolForm & { type: 'school' })
   | (ShopForm & { type: 'shopkeeper' });
-
 interface Props {
   role: Role;
 }
-
 export default function DetailsForm({ role }: Props) {
   const initialData: DetailsFormData =
     role === 'school'
@@ -53,28 +48,21 @@ export default function DetailsForm({ role }: Props) {
           shop_type: '',
           image: null,
         };
-
   const { data, setData, post, processing, errors, reset } = useForm<DetailsFormData>(initialData);
-
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData();
-
-    // Add role explicitly for the backend
     formData.append('role', role);
-
     Object.entries(data).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
         formData.append(key, value);
       }
     });
-
     post(route('details.store'),  {
       forceFormData: true,
       onSuccess: () => reset(),
     });
   };
-
   return (
     <AuthLayout title="Add Details" description={`Enter your ${role} details`}>
       <Head title="Add Details" />

@@ -1,4 +1,4 @@
-import { useState, FormEventHandler } from 'react';
+import {  FormEventHandler } from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import InputError from '@/components/input-error';
@@ -17,9 +17,7 @@ interface LoginProps {
     status?: string;
     canResetPassword: boolean;
 }
-type LoginRole =  'shopkeeper' | 'parent' | 'school';
 export default function Login({ status, canResetPassword }: LoginProps) {
-    const [role, setRole] = useState<LoginRole>('parent');
     const { data, setData, post, processing, errors, reset } = useForm<Required<LoginForm>>({
         email: '',
         password: '',
@@ -37,20 +35,6 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
             <form className="flex flex-col gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
-                    {/* Login role dropdown */}
-                    <div className="grid gap-2">
-                        <Label htmlFor="role">Login As</Label>
-                        <select
-                            id="role"
-                            value={role}
-                            onChange={(e) => setRole(e.target.value as LoginRole)}
-                            className="border px-3 py-2 rounded-md"
-                        >
-                            <option value="shopkeeper">Shopkeeper</option>
-                            <option value="parent">parent</option>
-                            <option value="school">School</option>
-                        </select>
-                    </div>
                     <div className="grid gap-2">
                         <Label htmlFor="email">Email address</Label>
                         <Input
