@@ -8,16 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class SchoolProfile extends Model
 {
     use HasFactory;
-
     protected $fillable = [
-        'name',
+        'school_name',
         'user_id',
         'reg_no',
+        'address',
         'affiliation',
         'level',
         'image',
         'contact_number',];
-
     public function user()
     {
         return $this->belongsTo(User::class);

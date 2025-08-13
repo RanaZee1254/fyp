@@ -11,70 +11,67 @@ use Inertia\Inertia;
 use Inertia\Response;
 class DetailsController extends Controller
 {
-   public function create(Request $request) 
-{ 
-    dd('code ended 001');
-    $role = $request->query('role');
-    if (!in_array($role, ['school', 'shopkeeper'])) {
+    public function index(Request $request): Response {
+        $role = $request->query('role');
+       $role = Auth::user()?->role;
+if (!in_array($role, ['school', 'shopkeeper'])) {
+    abort(404);
+}
+    return Inertia::render('details', ['role' => $role]);
+}
+   public function create(Request $request): Response
+{
+    $user = Auth::user();
+
+    if (!in_array($user->role, ['school', 'shopkeeper'])) {
         abort(404);
-         return Inertia::render('details', [
-        'role' => $role,
-    ]);
     }
+
+    return Inertia::render('details/create', [
+        'role' => $user->role
+    ]);
 }
     /**
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request)
-    {
-        dd('code ended 112');
-     $users = Auth::user();
-    //  dd('code ended 112');
-       $role = $users->role;
-        if ($role === 'school') {
-           $validated = $request->validate([
-    'school_name' => 'required|string|max:255',
-    'address' => 'required|string|max:255',
-    'reg_no' => 'required|string|max:255',
-    'affiliation' => 'nullable|string|max:255',
-    'level' => 'nullable|string|max:255',
-    'Contact_Number' => 'nullable|string|max:20',
-    'image' => 'required|image|max:2048',
-]);
-            if ($request->hasFile('image')) {
-                $validated['image'] = $request->file('image')->store('school-images', 'public');
-            }
-            SchoolProfile::create([
-                'user_id' => $users->id,
-                'name' => $request['school_name'],
-                'reg_no' => $request['reg_no'],
-                'affiliation' => $request['affiliation'] ?? null,
-                'level' => $request['level'] ?? null,
-                'image' => $validated['image'] ?? null,
-                'address' => $request['address'],
-                 'Contact_Number'=>$validated['Contact_Number'] ?? null,
-            ]);
-        } elseif ($role === 'shopkeeper') {
-            $validated = $request->validate([
-                'shop_name' => 'required|string|max:255',
-                'shop_type' => 'required|string|max:255',
-                'address' => 'required|string|max:255',
-                'image' => 'required|image|max:2048',
-            ]);
-            if ($request->hasFile('image')) {
-                $validated['image'] = $request->file('image')->store('shop-images', 'public');
-            }
-            ShopProfile::create([
-                'user_id' => $users->id,
-                'shop_name' => $request['shop_name'],
-                'shop_type' => $request['shop_type'],
-                'address' => $request['address'],
-                'image' => $validated['image'] ?? null,
-            ]);
-        } elseif ($role === 'parent') {
-            return redirect()->route('dashboard');
+   public function store(Request $request)
+{
+    $user = Auth::user();
+    $role = $user->role;
+    if ($role === 'school') {
+        $validated = $request->validate([
+            'school_name' => 'required|string|max:255',
+            'reg_no' => 'required|string|max:255',
+            'address'=>'required|string|max:255',
+            'contact_number'=>'required|string|max:15',
+            'affiliation' => 'nullable|string|max:255',
+            'level' => 'nullable|string|max:255',
+            'image' => 'nullable|image|max:2048',
+        ]);
+        $imagePath = $request->file('image')?->store('school-images', 'public');
+        if ($imagePath) {
+            $validated['image'] = $imagePath;
         }
-        // dd('code ended 112');
+        SchoolProfile::create(array_merge($validated, ['user_id' => $user->id]));
+    } elseif ($role === 'shopkeeper') {
+        $validated = $request->validate([
+            'shop_name' => 'required|string|max:255',
+            'address'=>'required|string|max:255',
+            'contact_number'=>'required|string|max:15',
+            'shop_type' => 'required|string|max:255',
+            'image' => 'nullable|image|max:2048',
+        ]);
+        $imagePath = $request->file('image')?->store('shop-images', 'public');
+        if ($imagePath) {
+            $validated['image'] = $imagePath;
+        }
+        ShopProfile::create(array_merge($validated, ['user_id' => $user->id]));
+    } else {
+        // dd('code ended 0011');
         return redirect()->route('dashboard');
     }
+//  dd('code ended 0011');
+    return redirect()->route('dashboard');
+}
+
 }

@@ -8,11 +8,11 @@ return new class extends Migration {
         Schema::create('school_profiles', function (Blueprint $table) {
     $table->id();
     $table->foreignId('user_id')->constrained()->onDelete('cascade');
-    $table->string('name');
-    $table->string('reg_no')->default('reg-123');
-    $table->string('affiliation')->default('Unknown');
-    $table->string('level')->default('Unknown');
-    $table->string('contact_number')->nullable();
+    $table->string('school_name');
+    $table->string('reg_no');
+    $table->string('affiliation');
+    $table->string('level');
+    $table->string('contact_number');
     $table->timestamps();
 });
     }

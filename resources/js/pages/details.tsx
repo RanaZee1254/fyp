@@ -10,6 +10,7 @@ interface ShopForm {
   shop_name: string;
   address: string;
   shop_type: string;
+  contact_number: string;
   image: File | null;
   [key: string]: string | File | null | undefined;
 }
@@ -20,6 +21,7 @@ interface SchoolForm {
   affiliation?: string;
   level?: string;
   image: File | null;
+  contact_number:string;
   [key: string]: string | File | null | undefined;
 }
 type Role = 'school' | 'shopkeeper';
@@ -39,6 +41,7 @@ export default function DetailsForm({ role }: Props) {
           reg_no: '',
           affiliation: '',
           level: '',
+          contact_number: '',
           image: null,
         }
       : {
@@ -46,23 +49,18 @@ export default function DetailsForm({ role }: Props) {
           shop_name: '',
           address: '',
           shop_type: '',
+          contact_number:'',
           image: null,
         };
   const { data, setData, post, processing, errors, reset } = useForm<DetailsFormData>(initialData);
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append('role', role);
-    Object.entries(data).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        formData.append(key, value);
-      }
-    });
-    post(route('details.store'),  {
-      forceFormData: true,
-      onSuccess: () => reset(),
-    });
-  };
+ const submit = (e: React.FormEvent) => {
+  e.preventDefault();
+  console.log('Submitting data:', data);
+  post(route('details.store'), {
+    forceFormData: true,
+    onSuccess: () => reset(),
+  });
+};
   return (
     <AuthLayout title="Add Details" description={`Enter your ${role} details`}>
       <Head title="Add Details" />
@@ -86,6 +84,15 @@ export default function DetailsForm({ role }: Props) {
                 onChange={(e) => setData('address', e.target.value)}
               />
               <InputError message={errors.address} />
+            </div>
+             <div>
+              <Label htmlFor="contact_number">Contact Number</Label>
+              <Input
+                id="contact_number"
+                value={data.contact_number}
+                onChange={(e) => setData('contact_number', e.target.value)}
+              />
+              <InputError message={errors.contact_number} />
             </div>
             <div>
               <Label htmlFor="reg_no">Registration No</Label>
@@ -155,6 +162,15 @@ export default function DetailsForm({ role }: Props) {
               />
               <InputError message={errors.address} />
             </div>
+             <div>
+              <Label htmlFor="contact_number">Contact Number</Label>
+              <Input
+                id="contact_number"
+                value={data.contact_number}
+                onChange={(e) => setData('contact_number', e.target.value)}
+              />
+              <InputError message={errors.contact_number} />
+            </div>
             <div>
               <Label htmlFor="image">Shop Image</Label>
               <Input
@@ -167,9 +183,13 @@ export default function DetailsForm({ role }: Props) {
             </div>
           </>
         )}
-        <Button type="submit" disabled={processing}>
-          {processing ? <LoaderCircle className="animate-spin" /> : 'Submit Details'}
-        </Button>
+        <Button
+  type="submit"
+  disabled={processing}
+  className="bg-blue-600 hover:bg-blue-700 text-white"
+>
+  {processing ? <LoaderCircle className="animate-spin" /> : 'Submit Details'}
+</Button>
       </form>
     </AuthLayout>
   );

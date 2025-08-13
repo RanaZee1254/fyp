@@ -20,7 +20,7 @@ type ProfileForm = {
     name: string;
     email: string;
     address: string;
-    contactNumber?: string;
+    contact_number?: string;
     image?: string | File;
 };
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
@@ -29,13 +29,14 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
        name: auth.user.name || '',
     email: auth.user.email || '',
     address: typeof auth.user.address === 'string' ? auth.user.address : '',
-    contactNumber: typeof auth.user.contactNumber === 'string' ? auth.user.contactNumber : '',
+    contact_number: typeof auth.user.contact_number === 'string' ? auth.user.contact_number : '',
     image: typeof auth.user.image === 'string' ? auth.user.image : '',
 });
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         patch(route('profile.update'), {
             preserveScroll: true,
+            forceFormData: true,
         });
     };
     return (
@@ -52,7 +53,6 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 className="mt-1 block w-full"
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
-                                required
                                 autoComplete="name"
                                 placeholder="Full name"
                             />
@@ -66,7 +66,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 className="mt-1 block w-full"
                                 value={data.email}
                                 onChange={(e) => setData('email', e.target.value)}
-                                required
+                                // required
                                 autoComplete="username"
                                 placeholder="Email address"
                             />
@@ -82,7 +82,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 className="mt-1 block w-full"
                                 value={data.address}
                                 onChange={(e) => setData('address', e.target.value)}
-                                required
+                                // required
                                 autoComplete="address"
                                 placeholder="Address"
                             />
@@ -90,20 +90,20 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                             <InputError className="mt-2" message={errors.address} />
                         </div>
                          <div className="grid gap-2">
-                                       <Label htmlFor="contactNumber">Contact Number</Label>
+                                       <Label htmlFor="contact_number">Contact Number</Label>
 
                             <Input
-                                id="contactNumber"
+                                id="contact_number"
                                 type="text"
                                 className="mt-1 block w-full"
-                                value={data.contactNumber}
-                                onChange={(e) => setData('contactNumber', e.target.value)}
-                                required
-                                autoComplete="contactNumber"
+                                value={data.contact_number}
+                                onChange={(e) => setData('contact_number', e.target.value)}
+                                // required
+                                autoComplete="contact_number"
                                 placeholder="Contact Number"
                             />
 
-                            <InputError className="mt-2" message={errors.contactNumber} />
+                            <InputError className="mt-2" message={errors.contact_number} />
                         </div>
                          <div className="grid gap-2">
                                        <Label htmlFor="image">Image</Label>

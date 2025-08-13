@@ -10,6 +10,7 @@ class ShopProfile extends Model
         'shop_name',
         'shop_type',
         'address',
+        'contact_number',
         'image',
     ];
     public function user()

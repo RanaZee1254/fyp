@@ -24,18 +24,35 @@ class ProfileController extends Controller
     /**
      * Update the user's profile settings.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user();
-        }
-
-        $request->user()->save();
-
-        return to_route('profile.edit');
+   public function update(ProfileUpdateRequest $request): RedirectResponse
+{
+    $user = $request->user();
+    $validated = $request->validated();
+    if ($request->hasFile('image')) {
+        $path = $request->file('image')->store('profile-images', 'public');
+        $validated['image'] = $path;
     }
+    $user->fill([
+        'name' => $validated['name'],
+        'email' => $validated['email'],
+    ]);
+    switch ($user->role) {
+        case 'school':
+            $user->address = $validated['address'];
+            $user->contact_number = $validated['contact_number'];
+            break;
+        case 'shop':
+            $user->address = $validated['address'];
+            $user->contact_number = $validated['contact_number'];
+            break;
+        case 'parent':
+            $user->address = $validated['address'];
+            $user->contact_number = $validated['contact_number'];
+            break;
+    }
+    $user->save();
+    return to_route('profile.edit');
+}
     /**
      * Delete the user's account.
      */

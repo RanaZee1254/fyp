@@ -15,18 +15,18 @@ class ProfileUpdateRequest extends FormRequest
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-    {
-        return [
-            'name' => ['required', 'string', 'max:255'],
+{
+    return [
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+        'address' => ['required', 'string', 'max:255'],
+        'contact_number' => ['nullable', 'string', 'max:20'],
+        'image' => ['nullable', 'image', 'max:2048'], // 2MB max
+    ];
+}
+public function authorize(): bool
+{
+    return true;
+}
 
-            'email' => [
-                'required',
-                'string',
-                'lowercase',
-                'email',
-                'max:255',
-                Rule::unique(User::class)->ignore($this->user()->id),
-            ],
-        ];
-    }
 }

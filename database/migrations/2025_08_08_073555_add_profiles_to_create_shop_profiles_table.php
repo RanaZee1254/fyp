@@ -7,14 +7,14 @@ return new class extends Migration {
     public function up()
     {
         Schema::table('shop_profiles', function (Blueprint $table) {
-            // if (!Schema::hasColumn('shop_profiles', 'role')) {
-                // $table->string('role')->nullable();
-            // }
-            if (!Schema::hasColumn('shop_profiles', 'name')) {
-                $table->string('name')->nullable();
+            if (!Schema::hasColumn('shop_profiles', 'role')) {
+                $table->string('role')->nullable();
             }
-            if (!Schema::hasColumn('shop_profiles', 'contact_number')) {
-                $table->string('contact_number')->nullable();
+            if (!Schema::hasColumn('shop_profiles', 'shop_name')) {
+                $table->string('shop_name')->nullable();
+            }
+            if (!Schema::hasColumn('shop_profiles', 'Contact_Number')) {
+                $table->string('Contact_Number')->nullable();
             }
             if (!Schema::hasColumn('shop_profiles', 'email')) {
                 $table->string('email')->nullable();
@@ -32,7 +32,7 @@ return new class extends Migration {
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['contact_number', 'image', 'address','email', 'name']);
+            // $table->dropColumn(['Contact_Number', 'image', 'address','email', 'shop_name']);
         });
     }
 };

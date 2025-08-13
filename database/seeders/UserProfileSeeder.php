@@ -5,8 +5,6 @@ use App\Models\User;
 use App\Models\ShopProfile;
 use App\Models\ParentProfile;
 use App\Models\SchoolProfile;
-use Illuminate\Support\Facades\Hash;
-use function Psy\sh;
 class UserProfileSeeder extends Seeder
 {
     public function run(): void
@@ -18,7 +16,6 @@ class UserProfileSeeder extends Seeder
                 'password' => bcrypt('your_password_here'),
                 'role' => 'school',
                 'contact_number' => '1112223333',
-                'image' => 'sample.jpg',
                 'address' => '123 Main St',
             ]
         );
@@ -28,9 +25,9 @@ class UserProfileSeeder extends Seeder
             'affiliation' => 'Cambridge',
             'level' => 'Secondary',
             'image' => 'sample.jpg',
-            'contact_number' => $schoolUser->contact_number,
-            'name' => $schoolUser->name,
-            'address'=> $schoolUser->address,
+            'contact_number' => '12345678',
+            'school_name' => 'Sunrise High School',
+            'address'=>'123 Main Street',
         ]);
         $shopUser = User::firstOrCreate(
             ['email' => 'shopkeeper@example.com'],
@@ -39,7 +36,6 @@ class UserProfileSeeder extends Seeder
                 'password' => bcrypt('password'),
                 'role' => 'shopkeeper',
                 'contact_number' => '44556677',
-                'image' => 'sample.jpg',
                 'address' => '45 Market Lane',
             ]
         );
@@ -47,9 +43,9 @@ class UserProfileSeeder extends Seeder
             'user_id' => $shopUser->id,
             'shop_type' => $shopUser->shop_type ?? 'Bookshop',
             'address' => $shopUser->address,
-            'image' => $shopUser->image,
+            'image' => 'sample.jpg',
             'contact_number' => $shopUser->contact_number,
-            'name'=>$shopUser->name,
+            'shop_name'=>$shopUser->name,
             'email' => $shopUser->email ?? 'no-email@example.com',
         ]);
         $parentUser = User::firstOrCreate(
@@ -59,7 +55,6 @@ class UserProfileSeeder extends Seeder
                 'password' => bcrypt('password'),
                 'role' => 'parent',
                 'contact_number' => '11223344',
-                'image' => 'sample.jpg',
                 'address' => '123 street',
             ]
         );

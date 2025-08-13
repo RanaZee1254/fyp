@@ -5,18 +5,18 @@ export interface Auth {
 }
 export type SchoolProfile = {
   reg_no: string;
-  affiliation?: string;
-  level?: string;
-  address?: string;
+  affiliation: string;
+  level: string;
+  address: string;
    image: string|File;
-   contact_number?: string;
+   contact_number: string;
    name:string;
 };
 export type ShopProfile = {
   shop_type: string;
-  address?: string;
-  image?: string|File;
-  contact_number?: string;
+  address: string;
+  image: string|File;
+  contact_number: string;
   email:string;
   name:string;
 };
@@ -26,8 +26,10 @@ export type User = {
   email:string;
   contact_number:string;
   image:string;
-  SchoolProfile?:SchoolProfile;
-  ShopProfile?:ShopProfile;
+  address:string;
+  email_verified_at:string | null;
+  SchoolProfile:SchoolProfile;
+  ShopProfile:ShopProfile;
 };
 export interface BreadcrumbItem {
     title: string;
@@ -58,10 +60,11 @@ export interface User {
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
-     contact_number:string;
-  image:string;
+    contact_number:string;
+    image:string;
+    address:string;
   role: 'school' | 'shopkeeper';
-  schoolProfile?: SchoolProfile;
-  shopProfile?: ShopProfile;
+  schoolProfile: SchoolProfile;
+  shopProfile: ShopProfile;
     [key: string]: unknown;
 }
