@@ -7,7 +7,7 @@ return new class extends Migration {
     public function up()
     {
         Schema::table('school_profiles', function (Blueprint $table) {
-            $table->string('image')->nullable();
+            $table->string('image');
             $table->string('address')->nullable();
             $table->string('email')->nullable();
         });

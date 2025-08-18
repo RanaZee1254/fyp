@@ -11,6 +11,7 @@ return Inertia::render('welcome');
 // dd('web.php is loaded');
 
 Route::get('/details', [DetailsController::class, 'index'])->name('details');
+Route::resource('/details', DetailsController::class)->except(['show']);
 Route::post('/details', [DetailsController::class, 'store'])->name('details.store');
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 

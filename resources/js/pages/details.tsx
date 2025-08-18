@@ -63,6 +63,7 @@ export default function DetailsForm({ role }: Props) {
 };
   return (
     <AuthLayout title="Add Details" description={`Enter your ${role} details`}>
+      
       <Head title="Add Details" />
       <form onSubmit={submit} className="space-y-6">
         {role === 'school' && (

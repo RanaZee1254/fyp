@@ -22,11 +22,9 @@ if (!in_array($role, ['school', 'shopkeeper'])) {
    public function create(Request $request): Response
 {
     $user = Auth::user();
-
     if (!in_array($user->role, ['school', 'shopkeeper'])) {
         abort(404);
     }
-
     return Inertia::render('details/create', [
         'role' => $user->role
     ]);
@@ -70,7 +68,65 @@ if (!in_array($role, ['school', 'shopkeeper'])) {
         // dd('code ended 0011');
         return redirect()->route('dashboard');
     }
-//  dd('code ended 0011');
+    return redirect()->route('dashboard');
+}
+public function edit($id)
+{
+    $user = Auth::user();
+    if ($user->role === 'school') {
+        $detail = SchoolProfile::where('id', $id)->where('user_id', $user->id)->firstOrFail();
+    } else {
+        $detail = ShopProfile::where('id', $id)->where('user_id', $user->id)->firstOrFail();
+    }
+
+    return Inertia::render('Edit', [
+        'detail' => $detail,
+        'mode' => 'edit',
+        'role' => $user->role,
+    ]);
+}
+public function update(Request $request, $id)
+{
+    $user = Auth::user();
+    if ($user->role === 'school') {
+        $profile = SchoolProfile::where('id', $id)->where('user_id', $user->id)->firstOrFail();
+        $validated = $request->validate([
+            'school_name' => 'required|string|max:255',
+            'reg_no' => 'required|string|max:255',
+            'address'=>'required|string|max:255',
+            'contact_number'=>'required|string|max:15',
+            'affiliation' => 'nullable|string|max:255',
+            'level' => 'nullable|string|max:255',
+            'image' => 'nullable|image|max:2048',
+        ]);
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('school-images', 'public');
+        }
+        $profile->update($validated);
+    } else {
+        $profile = ShopProfile::where('id', $id)->where('user_id', $user->id)->firstOrFail();
+        $validated = $request->validate([
+            'shop_name' => 'required|string|max:255',
+            'address'=>'required|string|max:255',
+            'contact_number'=>'required|string|max:15',
+            'shop_type' => 'required|string|max:255',
+            'image' => 'nullable|image|max:2048',
+        ]);
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('shop-images', 'public');
+        }
+        $profile->update($validated);
+    }
+    return redirect()->route('dashboard');
+}
+public function destroy($id)
+{
+    $user = Auth::user();
+    if ($user->role === 'school') {
+        SchoolProfile::where('id', $id)->where('user_id', $user->id)->delete();
+    } else {
+        ShopProfile::where('id', $id)->where('user_id', $user->id)->delete();
+    }
     return redirect()->route('dashboard');
 }
 
