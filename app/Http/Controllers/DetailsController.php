@@ -65,7 +65,6 @@ if (!in_array($role, ['school', 'shopkeeper'])) {
         }
         ShopProfile::create(array_merge($validated, ['user_id' => $user->id]));
     } else {
-        // dd('code ended 0011');
         return redirect()->route('dashboard');
     }
     return redirect()->route('dashboard');
@@ -73,14 +72,27 @@ if (!in_array($role, ['school', 'shopkeeper'])) {
 public function edit($id)
 {
     $user = Auth::user();
-    if ($user->role === 'school') {
-        $detail = SchoolProfile::where('id', $id)->where('user_id', $user->id)->firstOrFail();
-    } else {
-        $detail = ShopProfile::where('id', $id)->where('user_id', $user->id)->firstOrFail();
-    }
 
+    if ($user->role === 'school') {
+        $detail = SchoolProfile::where('id', $id)
+            ->where('user_id', $user->id)
+            ->firstOrFail();
+
+        $profiles = SchoolProfile::where('user_id', $user->id)
+            ->get(['id', 'school_name as name']);
+    } elseif ($user->role === 'shopkeeper') {
+        $detail = ShopProfile::where('id', $id)
+            ->where('user_id', $user->id)
+            ->firstOrFail();
+
+        $profiles = ShopProfile::where('user_id', $user->id)
+            ->get(['id', 'shop_name as name']);
+    } else {
+        abort(404);
+    }
     return Inertia::render('Edit', [
-        'detail' => $detail,
+        'profile' => $detail,
+        'profiles' => $profiles,
         'mode' => 'edit',
         'role' => $user->role,
     ]);

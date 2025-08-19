@@ -61,18 +61,8 @@ export default function Dashboard({ auth, schools, shops }: UserData) {
         >
           Edit School
         </Link>
-        <Link
-          method="delete"
-          href={`details/${user.SchoolProfile.id}`}
-          as="button"
-          className="rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700"
-        >
-          Remove School
-        </Link>
       </>
     ) : null}
-
-    {/* Always show Add button */}
     <Link
       href="details?role=school"
       className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"

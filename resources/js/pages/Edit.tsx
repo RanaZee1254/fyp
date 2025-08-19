@@ -28,9 +28,24 @@ interface Props {
   role: Role;
   profile: Partial<SchoolForm & ShopForm> & { id: number };
   profiles?: { id: number; name: string }[];
-  mode?: 'create' | 'edit';
+  mode?: 'edit';
 }
-export default function DetailsForm({ role, profile, profiles = [], mode = 'create' }: Props) {
+export function Edit({
+  profile,
+  profiles,
+  role,
+  mode,
+}: Props) {
+  return (
+    <DetailsForm
+      role={role}
+      profile={profile}
+      profiles={profiles}
+      mode={mode}
+    />
+  );
+}
+export default function DetailsForm({ role, profile, profiles = [], mode = 'edit' }: Props) {
   const [selectedProfileId, setSelectedProfileId] = useState<number | null>(null);
   const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null);
   const { data, setData, post, put, delete: destroy, processing, errors } = useForm({
@@ -55,9 +70,31 @@ export default function DetailsForm({ role, profile, profiles = [], mode = 'crea
   return (
     <AuthLayout title="Manage Details" description={`Manage your ${role} details`}>
       <Head title="Manage Details" />
-      <form onSubmit={submit} className="space-y-6">
+      <form onSubmit={submit} className="space-y-6,space-x-6">
         {role === 'school' && (
           <>
+          {mode === 'edit' && profiles.length > 0 && (
+            <div className="flex items-center gap-3 border">
+              <select
+                className="border rounded p-2"
+                value={selectedProfileId ?? ''}
+                onChange={(e) => {
+                  const id = Number(e.target.value);
+                  setSelectedProfileId(id);
+                  if (id) {
+                    window.location.href = route('details.edit', id);
+                  }
+                }}
+              >
+                <option value="">Select {role} to edit</option>
+                {profiles.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
             <div>
               <Label htmlFor="school_name">School Name</Label>
               <Input
@@ -187,31 +224,9 @@ export default function DetailsForm({ role, profile, profiles = [], mode = 'crea
           </>
         )}
         <div className="flex flex-col gap-4">
-          <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white" disabled={processing}>
+           <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white" disabled={processing}>
             {processing ? <LoaderCircle className="animate-spin" /> : mode === 'edit' ? 'Update' : 'Add'}
           </Button>
-          {mode === 'edit' && profiles.length > 0 && (
-            <div className="flex items-center gap-3">
-              <select
-                className="border rounded p-2"
-                value={selectedProfileId ?? ''}
-                onChange={(e) => {
-                  const id = Number(e.target.value);
-                  setSelectedProfileId(id);
-                  if (id) {
-                    window.location.href = route('details.edit', id);
-                  }
-                }}
-              >
-                <option value="">Select {role} to edit</option>
-                {profiles.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
           {mode === 'edit' && profiles.length > 0 && (
             <div className="flex items-center gap-3">
               <select

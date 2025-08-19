@@ -141,7 +141,7 @@ export default function Register() {
           </div>
           <Button
             type="submit"
-            className="inline-block rounded-sm border bg-blue-500 border-[#19140035] px-5 py-1.5 text-sm leading-normal text-white hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+            className="inline-block rounded-sm border bg-blue-500  hover:bg-blue-600 px-5 py-1.5 text-sm leading-normal text-white dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
             tabIndex={6}
             disabled={processing}
           >
