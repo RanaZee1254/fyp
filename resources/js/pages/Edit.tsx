@@ -6,14 +6,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LoaderCircle } from 'lucide-react';
 import { route } from 'ziggy-js';
-import { useState } from 'react';
 type Role = 'school' | 'shopkeeper';
 interface ShopForm {
   shop_name: string;
   address: string;
   shop_type: string;
   contact_number: string;
-  image: File | null;
+  image: string | File | null | undefined ;
 }
 interface SchoolForm {
   school_name: string;
@@ -22,13 +21,13 @@ interface SchoolForm {
   affiliation?: string;
   level?: string;
   contact_number: string;
-  image: File | null;
+  image:string | File | null | undefined;
 }
 interface Props {
   role: Role;
   profile: Partial<SchoolForm & ShopForm> & { id: number };
   profiles?: { id: number; name: string }[];
-  mode?: 'edit';
+  mode?: 'edit'|'update';
 }
 export function Edit({
   profile,
@@ -45,27 +44,38 @@ export function Edit({
     />
   );
 }
-export default function DetailsForm({ role, profile, profiles = [], mode = 'edit' }: Props) {
-  const [selectedProfileId, setSelectedProfileId] = useState<number | null>(null);
-  const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null);
-  const { data, setData, post, put, delete: destroy, processing, errors } = useForm({
-    school_name: profile?.school_name ?? '',
-    shop_name: profile?.shop_name ?? '',
-    reg_no: profile?.reg_no ?? '',
-    address: profile?.address ?? '',
-    contact_number: profile?.contact_number ?? '',
-    shop_type: profile?.shop_type ?? '',
-    affiliation: profile?.affiliation ?? '',
-    level: profile?.level ?? '',
-    image: profile?.image ?? null,
-  });
+export default function DetailsForm({ role, profile, mode = 'edit' }: Props) {
+const { data, setData, put, processing, errors } = useForm(
+  role === 'school'
+    ? {
+        school_name: profile?.school_name ?? '',
+        reg_no: profile?.reg_no ?? '',
+        address: profile?.address ?? '',
+        contact_number: profile?.contact_number ?? '',
+        affiliation: profile?.affiliation ?? '',
+        level: profile?.level ?? '',
+        image: null as File | null,
+      }
+    : {
+        shop_name: profile?.shop_name ?? '',
+        shop_type: profile?.shop_type ?? '',
+        address: profile?.address ?? '',
+        contact_number: profile?.contact_number ?? '',
+        image: null as File | null,
+      }
+);
   const submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (mode === 'edit' && profile?.id) {
-      put(route('details.update', profile.id), { forceFormData: true });
-    } else {
-      post(route('details.store'), { forceFormData: true });
+  e.preventDefault();
+  const formData = new FormData();
+  Object.entries(data).forEach(([key, value]) => {
+    if (value !== null && value !== undefined) {
+      formData.append(key, value);
     }
+  });  
+  console.log("FormData entries:", [...formData.entries()]);
+  put(route('details.update', profile.id),{
+    forceFormData: true,
+  });
   };
   return (
     <AuthLayout title="Manage Details" description={`Manage your ${role} details`}>
@@ -73,36 +83,13 @@ export default function DetailsForm({ role, profile, profiles = [], mode = 'edit
       <form onSubmit={submit} className="space-y-6,space-x-6">
         {role === 'school' && (
           <>
-          {mode === 'edit' && profiles.length > 0 && (
-            <div className="flex items-center gap-3 border">
-              <select
-                className="border rounded p-2"
-                value={selectedProfileId ?? ''}
-                onChange={(e) => {
-                  const id = Number(e.target.value);
-                  setSelectedProfileId(id);
-                  if (id) {
-                    window.location.href = route('details.edit', id);
-                  }
-                }}
-              >
-                <option value="">Select {role} to edit</option>
-                {profiles.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
             <div>
               <Label htmlFor="school_name">School Name</Label>
               <Input
-              id="school_name"
-               autoComplete="organization"
-            value={data.school_name ?? ''}
-             onChange={(e) => setData('school_name', e.target.value)}
-          />
+                id="school_name"
+                value={typeof data.school_name === 'string' ? data.school_name : ''}
+                onChange={(e) => setData('school_name', e.target.value)}
+              />
               <InputError message={errors.school_name} />
             </div>
             <div>
@@ -158,13 +145,17 @@ export default function DetailsForm({ role, profile, profiles = [], mode = 'edit
             <div>
               <Label htmlFor="image">School Image</Label>
               <Input
-              id="image"
               type="file"
-              autoComplete="off"
               accept="image/*"
-              onChange={(e) => setData('image', e.target.files?.[0] ?? null)}
-              />
-              <InputError message={errors.image} />
+              onChange={(e) => {
+    if (e.target.files?.[0]) {
+      setData("image", e.target.files[0]);
+    } else {
+      setData("image", null);
+    }
+  }}
+/>
+<InputError message={errors.image} />
             </div>
           </>
         )}
@@ -213,49 +204,24 @@ export default function DetailsForm({ role, profile, profiles = [], mode = 'edit
             <div>
               <Label htmlFor="image">Shop Image</Label>
               <Input
-              id="image"
-              type="file"
-              autoComplete="off"
-              accept="image/*"
-              onChange={(e) => setData('image', e.target.files?.[0] ?? null)}
-              />
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  if (e.target.files?.[0]) {
+                    setData("image", e.target.files[0]);
+                  } else {
+                    setData("image",null);
+                  }
+                }}
+              />           
               <InputError message={errors.image} />
             </div>
           </>
         )}
         <div className="flex flex-col gap-4">
            <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white" disabled={processing}>
-            {processing ? <LoaderCircle className="animate-spin" /> : mode === 'edit' ? 'Update' : 'Add'}
+            {processing ? <LoaderCircle className="animate-spin" /> : mode === 'edit' ? 'Update' : 'Update'}
           </Button>
-          {mode === 'edit' && profiles.length > 0 && (
-            <div className="flex items-center gap-3">
-              <select
-                className="border rounded p-2"
-                value={selectedDeleteId ?? ''}
-                onChange={(e) => setSelectedDeleteId(Number(e.target.value))}
-              >
-                <option value="">Select {role} to delete</option>
-                {profiles.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
-                  </option>
-                ))}
-              </select>
-              <Button
-                type="button"
-                variant="destructive"
-                disabled={processing || !selectedDeleteId}
-                onClick={() => {
-                  if (selectedDeleteId && confirm('Are you sure you want to delete this profile?')) {
-                    destroy(route('details.destroy', selectedDeleteId));
-                  }
-                }}
-                className="bg-red-600 hover:bg-red-700 text-white"
-              >
-                {processing ? <LoaderCircle className="animate-spin" /> : 'Delete'}
-              </Button>
-            </div>
-          )}
         </div>
       </form>
     </AuthLayout>

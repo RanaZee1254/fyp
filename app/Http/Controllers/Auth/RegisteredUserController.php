@@ -2,10 +2,8 @@
 namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
@@ -41,7 +39,6 @@ class RegisteredUserController extends Controller
             'contact_number' => $request->contact_number,
             'role' => $request->role,
         ]);
-        // dd('code ended 1');
     return redirect()->route('login');
     }
 }

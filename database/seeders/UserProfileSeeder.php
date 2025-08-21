@@ -13,7 +13,7 @@ class UserProfileSeeder extends Seeder
             ['email' => 'school@example.com'],
             [
                 'name' => 'Sunrise High School',
-                'password' => bcrypt('your_password_here'),
+                'password' => bcrypt('password'),
                 'role' => 'school',
                 'contact_number' => '1112223333',
                 'address' => '123 Main St',
