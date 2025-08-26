@@ -1,4 +1,4 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import AuthLayout from '@/layouts/auth-layout';
 import { Button } from '@/components/ui/button';
@@ -45,7 +45,7 @@ export function Edit({
   );
 }
 export default function DetailsForm({ role, profile, mode = 'edit' }: Props) {
-const { data, setData, put, processing, errors } = useForm(
+const { data, setData, processing, errors } = useForm(
   role === 'school'
     ? {
         school_name: profile?.school_name ?? '',
@@ -54,29 +54,21 @@ const { data, setData, put, processing, errors } = useForm(
         contact_number: profile?.contact_number ?? '',
         affiliation: profile?.affiliation ?? '',
         level: profile?.level ?? '',
-        image: null as File | null,
+        image: profile?.image ?? null,
       }
     : {
         shop_name: profile?.shop_name ?? '',
         shop_type: profile?.shop_type ?? '',
         address: profile?.address ?? '',
         contact_number: profile?.contact_number ?? '',
-        image: null as File | null,
+        image: profile?.image ?? null,
       }
 );
   const submit = (e: React.FormEvent) => {
   e.preventDefault();
-  const formData = new FormData();
-  Object.entries(data).forEach(([key, value]) => {
-    if (value !== null && value !== undefined) {
-      formData.append(key, value);
-    }
-  });  
-  console.log("FormData entries:", [...formData.entries()]);
-  put(route('details.update', profile.id),{
-    forceFormData: true,
-  });
-  };
+  console.log("FormData entries -->:", data);
+  router.put(route('details.update', profile.id), data);
+};
   return (
     <AuthLayout title="Manage Details" description={`Manage your ${role} details`}>
       <Head title="Manage Details" />
@@ -155,7 +147,8 @@ const { data, setData, put, processing, errors } = useForm(
     }
   }}
 />
-<InputError message={errors.image} />
+
+              <InputError message={errors.image} />
             </div>
           </>
         )}
@@ -210,7 +203,7 @@ const { data, setData, put, processing, errors } = useForm(
                   if (e.target.files?.[0]) {
                     setData("image", e.target.files[0]);
                   } else {
-                    setData("image",null);
+                    setData("image", null);
                   }
                 }}
               />           
